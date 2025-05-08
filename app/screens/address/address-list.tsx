@@ -99,7 +99,7 @@ const AddressList = () => {
   }
 
   return (
-    <View className="flex-1 bg-background">
+    <View className="flex-1 bg-background p-safe">
       <Navbar title="Addresses" />
       <View className="flex-1">
         <ScrollView
