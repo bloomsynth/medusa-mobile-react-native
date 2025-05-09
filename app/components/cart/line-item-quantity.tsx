@@ -2,6 +2,7 @@ import React from 'react';
 import {useColors} from '@styles/hooks';
 import {ActivityIndicator, TouchableOpacity, View} from 'react-native';
 import Icon from '@react-native-vector-icons/ant-design';
+import {useLocalization} from '@fluent/react';
 import Text from '@components/common/text';
 import {useCart} from '@data/cart-context';
 
@@ -16,6 +17,7 @@ const LineItemQuantity = ({
   lineItemId,
   mode,
 }: LineItemQuantityProps) => {
+  const {l10n} = useLocalization();
   const colors = useColors();
   const {updateLineItem} = useCart();
   const [updating, setUpdating] = React.useState(false);
@@ -59,7 +61,9 @@ const LineItemQuantity = ({
           </TouchableOpacity>
         </View>
       ) : (
-        <Text className="text-base">Qty: {quantity}</Text>
+        <Text className="text-base">
+          {l10n.getString('qty')}: {quantity}
+        </Text>
       )}
       {updating ? (
         <ActivityIndicator size="small" color={colors.primary} />

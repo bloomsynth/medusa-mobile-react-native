@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {View, ScrollView, RefreshControl} from 'react-native';
+import {useLocalization} from '@fluent/react';
 import Text from '@components/common/text';
 import Navbar from '@components/common/navbar';
 import {useCustomer} from '@data/customer-context';
@@ -13,14 +14,15 @@ import {z} from 'zod';
 import {useColors} from '@styles/hooks';
 
 const profileSchema = z.object({
-  first_name: z.string().min(1, 'First name is required'),
-  last_name: z.string().min(1, 'Last name is required'),
+  first_name: z.string().min(1, 'first-name-is-required'),
+  last_name: z.string().min(1, 'last-name-is-required'),
   phone: z.string().optional(),
 });
 
 type ProfileFormData = z.infer<typeof profileSchema>;
 
 const ProfileDetails = () => {
+  const {l10n} = useLocalization();
   const {customer, refreshCustomer} = useCustomer();
   const queryClient = useQueryClient();
   const [isEditing, setIsEditing] = useState(false);
@@ -86,7 +88,9 @@ const ProfileDetails = () => {
       return (
         <View className="gap-4">
           <View className="gap-2">
-            <Text className="text-gray-500">First Name</Text>
+            <Text className="text-gray-500">
+              {l10n.getString('first-name')}
+            </Text>
             <Controller
               control={control}
               name="first_name"
@@ -95,15 +99,19 @@ const ProfileDetails = () => {
                   value={value}
                   onChangeText={onChange}
                   onBlur={onBlur}
-                  placeholder="First Name"
-                  error={errors.first_name?.message}
+                  placeholder={l10n.getString('first-name')}
+                  error={
+                    errors.first_name?.message
+                      ? l10n.getString(errors.first_name.message)
+                      : undefined
+                  }
                 />
               )}
             />
           </View>
 
           <View className="gap-2">
-            <Text className="text-gray-500">Last Name</Text>
+            <Text className="text-gray-500">{l10n.getString('last-name')}</Text>
             <Controller
               control={control}
               name="last_name"
@@ -112,15 +120,19 @@ const ProfileDetails = () => {
                   value={value}
                   onChangeText={onChange}
                   onBlur={onBlur}
-                  placeholder="Last Name"
-                  error={errors.last_name?.message}
+                  placeholder={l10n.getString('last-name')}
+                  error={
+                    errors.last_name?.message
+                      ? l10n.getString(errors.last_name.message)
+                      : undefined
+                  }
                 />
               )}
             />
           </View>
 
           <View className="gap-2">
-            <Text className="text-gray-500">Phone</Text>
+            <Text className="text-gray-500">{l10n.getString('phone')}</Text>
             <Controller
               control={control}
               name="phone"
@@ -129,7 +141,7 @@ const ProfileDetails = () => {
                   value={value}
                   onChangeText={onChange}
                   onBlur={onBlur}
-                  placeholder="Phone"
+                  placeholder={l10n.getString('phone')}
                   keyboardType="phone-pad"
                   error={errors.phone?.message}
                 />
@@ -143,19 +155,19 @@ const ProfileDetails = () => {
     return (
       <View className="gap-6">
         <View className="border-b border-gray-200 pb-6">
-          <Text className="text-gray-500 mb-1">Name</Text>
+          <Text className="text-gray-500 mb-1">{l10n.getString('name')}</Text>
           <Text className="text-lg">
             {customer?.first_name} {customer?.last_name}
           </Text>
         </View>
 
         <View className="border-b border-gray-200 pb-6">
-          <Text className="text-gray-500 mb-1">Email</Text>
+          <Text className="text-gray-500 mb-1">{l10n.getString('email')}</Text>
           <Text className="text-lg">{customer?.email}</Text>
         </View>
 
         <View className="border-b border-gray-200 pb-6">
-          <Text className="text-gray-500 mb-1">Phone</Text>
+          <Text className="text-gray-500 mb-1">{l10n.getString('phone')}</Text>
           <Text className="text-lg">{customer?.phone || '-'}</Text>
         </View>
       </View>
@@ -164,7 +176,7 @@ const ProfileDetails = () => {
 
   return (
     <View className="flex-1 bg-background p-safe">
-      <Navbar title="Profile Details" />
+      <Navbar title={l10n.getString('profile-details')} />
       <View className="flex-1">
         <ScrollView
           className="flex-1"
@@ -183,13 +195,13 @@ const ProfileDetails = () => {
               <View className="flex-1">
                 <Button
                   variant="secondary"
-                  title="Cancel"
+                  title={l10n.getString('cancel')}
                   onPress={handleCancel}
                 />
               </View>
               <View className="flex-1">
                 <Button
-                  title="Save"
+                  title={l10n.getString('save')}
                   onPress={handleSave}
                   loading={updateCustomerMutation.isPending}
                 />
@@ -197,7 +209,7 @@ const ProfileDetails = () => {
             </View>
           ) : (
             <Button
-              title="Edit Profile"
+              title={l10n.getString('edit-profile')}
               onPress={() => setIsEditing(true)}
               variant="primary"
             />

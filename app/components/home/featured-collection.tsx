@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useQuery} from '@tanstack/react-query';
+import {useLocalization} from '@fluent/react';
 import Text from '@components/common/text';
 import {formatImageUrl} from '@utils/image-url';
 import {HttpTypes} from '@medusajs/types';
@@ -31,10 +32,11 @@ type FeaturedCollectionProps = {
 
 const FeaturedCollection = ({
   limit = 10,
-  name = 'Top Selling',
+  name,
   showCta = true,
   queryKey,
 }: FeaturedCollectionProps) => {
+  const {l10n} = useLocalization();
   const navigation = useNavigation();
   const {region} = useRegion();
 
@@ -57,13 +59,15 @@ const FeaturedCollection = ({
   return (
     <View className="mb-6">
       <View className="flex-row justify-between items-center mb-4">
-        <Text className="text-lg font-content-bold">{name}</Text>
+        <Text className="text-lg font-content-bold">
+          {name ?? l10n.getString('top-selling')}
+        </Text>
         {showCta && (
           <TouchableOpacity
             onPress={() =>
               navigation.dispatch(TabActions.jumpTo('Collections'))
             }>
-            <Text className="text-primary">See All</Text>
+            <Text className="text-primary">{l10n.getString('see-all')}</Text>
           </TouchableOpacity>
         )}
       </View>

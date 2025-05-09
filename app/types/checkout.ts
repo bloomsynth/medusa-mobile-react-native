@@ -7,10 +7,10 @@ export const CHECKOUT_STEPS: {
   title: string;
   icon: 'environment' | 'inbox' | 'wallet' | 'profile';
 }[] = [
-  {id: 'address', title: 'Address', icon: 'environment'},
-  {id: 'delivery', title: 'Delivery', icon: 'inbox'},
-  {id: 'payment', title: 'Payment', icon: 'wallet'},
-  {id: 'review', title: 'Review', icon: 'profile'},
+  {id: 'address', title: 'address', icon: 'environment'},
+  {id: 'delivery', title: 'delivery', icon: 'inbox'},
+  {id: 'payment', title: 'payment', icon: 'wallet'},
+  {id: 'review', title: 'review', icon: 'profile'},
 ];
 
 export type AddressFields = {
@@ -26,15 +26,15 @@ export type AddressFields = {
 };
 
 export const addressSchema = z.object({
-  first_name: z.string().min(1, 'First name is required'),
-  last_name: z.string().min(1, 'Last name is required'),
-  address_1: z.string().min(1, 'Address is required'),
+  first_name: z.string().min(1, 'first-name-is-required'),
+  last_name: z.string().min(1, 'last-name-is-required'),
+  address_1: z.string().min(1, 'address-is-required'),
   company: z.string().optional().or(z.literal('')),
-  postal_code: z.string().min(1, 'Postal code is required'),
-  city: z.string().min(1, 'City is required'),
-  country_code: z.string().min(1, 'Country is required'),
+  postal_code: z.string().min(1, 'postal-code-is-required'),
+  city: z.string().min(1, 'city-is-required'),
+  country_code: z.string().min(1, 'country-is-required'),
   province: z.string().optional().or(z.literal('')),
-  phone: z.string().min(1, 'Phone is required'),
+  phone: z.string().min(1, 'phone-is-required'),
 }) satisfies z.ZodType<AddressFields>;
 
 export const createEmptyAddress = (): AddressFields =>
@@ -43,7 +43,7 @@ export const createEmptyAddress = (): AddressFields =>
   ) as AddressFields;
 
 export const checkoutSchema = z.object({
-  email: z.string().email('Please enter a valid email'),
+  email: z.string().email('please-enter-a-valid-email'),
   shipping_address: addressSchema,
   billing_address: addressSchema,
   use_same_billing: z.boolean(),

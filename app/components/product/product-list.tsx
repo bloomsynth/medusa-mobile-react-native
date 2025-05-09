@@ -10,6 +10,7 @@ import {
 import {useInfiniteQuery} from '@tanstack/react-query';
 import {useNavigation} from '@react-navigation/native';
 import {HttpTypes} from '@medusajs/types';
+import {useLocalization} from '@fluent/react';
 import {useColors} from '@styles/hooks';
 import Text from '@components/common/text';
 import Loader from '@components/common/loader';
@@ -42,9 +43,10 @@ const ProductsList = ({
   queryKey,
   additionalParams = {},
   headerComponent,
-  name = 'Latest Products',
+  name,
   hideTitle = false,
 }: ProductsListProps) => {
+  const {l10n} = useLocalization();
   const colors = useColors();
   const {region} = useRegion();
   const {
@@ -109,7 +111,11 @@ const ProductsList = ({
     return (
       <View>
         {headerComponent}
-        {!hideTitle && <Text className="text-lg font-content-bold">{name}</Text>}
+        {!hideTitle && (
+          <Text className="text-lg font-content-bold">
+            {name ?? l10n.getString('latest-products')}
+          </Text>
+        )}
       </View>
     );
   };

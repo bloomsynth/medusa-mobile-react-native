@@ -1,5 +1,6 @@
 import React from 'react';
 import {TouchableNativeFeedback, View} from 'react-native';
+import {useLocalization} from '@fluent/react';
 import Text from './text';
 import {useColors} from '@styles/hooks';
 import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
@@ -8,6 +9,7 @@ import Icon from '@react-native-vector-icons/ant-design';
 type icon = 'home' | 'appstore' | 'profile' | 'bars';
 
 function TabBar({state, descriptors, navigation}: BottomTabBarProps) {
+  const {l10n} = useLocalization();
   const colors = useColors();
   const iconMap: Record<string, icon> = {
     Home: 'home',
@@ -50,8 +52,10 @@ function TabBar({state, descriptors, navigation}: BottomTabBarProps) {
                 color={isFocused ? colors.primary : colors.content}
               />
               <Text
-                className={`text-sm ${isFocused ? 'text-primary font-content-bold' : 'text-content'}`}>
-                {label}
+                className={`text-sm ${
+                  isFocused ? 'text-primary font-content-bold' : 'text-content'
+                }`}>
+                {l10n.getString(label)}
               </Text>
             </View>
           </TouchableNativeFeedback>

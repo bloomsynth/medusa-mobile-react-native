@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {View, TouchableOpacity, ScrollView, Keyboard} from 'react-native';
+import {useLocalization} from '@fluent/react';
 import Text from '@components/common/text';
 import Input from '@components/common/input';
 import Button from '@components/common/button';
@@ -11,15 +12,16 @@ import {zodResolver} from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
 const registerSchema = z.object({
-  firstName: z.string().min(1, 'First name is required'),
-  lastName: z.string().min(1, 'Last name is required'),
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
+  firstName: z.string().min(1, 'first-name-is-required'),
+  lastName: z.string().min(1, 'last-name-is-required'),
+  email: z.string().email('invalid-email-address'),
+  password: z.string().min(6, 'password-must-be-at-least-n-characters'),
 });
 
 type RegisterSchema = z.infer<typeof registerSchema>;
 
 const Register = () => {
+  const {l10n} = useLocalization();
   const [loading, setLoading] = useState(false);
   const {register: registerCustomer} = useCustomer();
   const navigation = useNavigation();
@@ -68,7 +70,7 @@ const Register = () => {
         message:
           err instanceof Error
             ? err.message
-            : 'Registration failed. Please try again.',
+            : l10n.getString('registration-failed'),
       });
     } finally {
       setLoading(false);
@@ -77,7 +79,7 @@ const Register = () => {
 
   return (
     <View className="flex-1 bg-background p-safe">
-      <Navbar title="Register" />
+      <Navbar title={l10n.getString('register')} />
 
       <ScrollView className="flex-1" keyboardShouldPersistTaps="handled">
         <View className="p-4 gap-4">
@@ -92,11 +94,15 @@ const Register = () => {
             name="firstName"
             render={({field: {onChange, value}}) => (
               <Input
-                label="First Name"
-                placeholder="Enter your first name"
+                label={l10n.getString('first-name')}
+                placeholder={l10n.getString('enter-your-first-name')}
                 value={value}
                 onChangeText={onChange}
-                error={errors.firstName?.message}
+                error={
+                  errors.firstName?.message
+                    ? l10n.getString(errors.firstName.message)
+                    : undefined
+                }
                 containerClassName="mb-0"
               />
             )}
@@ -107,11 +113,15 @@ const Register = () => {
             name="lastName"
             render={({field: {onChange, value}}) => (
               <Input
-                label="Last Name"
-                placeholder="Enter your last name"
+                label={l10n.getString('last-name')}
+                placeholder={l10n.getString('enter-your-last-name')}
                 value={value}
                 onChangeText={onChange}
-                error={errors.lastName?.message}
+                error={
+                  errors.lastName?.message
+                    ? l10n.getString(errors.lastName.message)
+                    : undefined
+                }
                 containerClassName="mb-0"
               />
             )}
@@ -122,13 +132,17 @@ const Register = () => {
             name="email"
             render={({field: {onChange, value}}) => (
               <Input
-                label="Email"
-                placeholder="Enter your email"
+                label={l10n.getString('email')}
+                placeholder={l10n.getString('enter-your-email')}
                 value={value}
                 onChangeText={onChange}
                 autoCapitalize="none"
                 keyboardType="email-address"
-                error={errors.email?.message}
+                error={
+                  errors.email?.message
+                    ? l10n.getString(errors.email.message)
+                    : undefined
+                }
                 containerClassName="mb-0"
               />
             )}
@@ -139,12 +153,16 @@ const Register = () => {
             name="password"
             render={({field: {onChange, value}}) => (
               <Input
-                label="Password"
-                placeholder="Enter your password"
+                label={l10n.getString('password')}
+                placeholder={l10n.getString('enter-your-password')}
                 value={value}
                 onChangeText={onChange}
                 secureTextEntry
-                error={errors.password?.message}
+                error={
+                  errors.password?.message
+                    ? l10n.getString(errors.password.message, {n: 6})
+                    : undefined
+                }
                 containerClassName="mb-0"
               />
             )}
@@ -153,12 +171,16 @@ const Register = () => {
           <Button
             onPress={handleSubmit(onSubmit)}
             loading={loading}
-            title={loading ? 'Creating account...' : 'Create Account'}
+            title={
+              loading
+                ? l10n.getString('creating-account')
+                : l10n.getString('create-account')
+            }
           />
 
           <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
             <Text className="text-center text-primary">
-              Already have an account? Sign In
+              {l10n.getString('already-have-an-account')}
             </Text>
           </TouchableOpacity>
         </View>

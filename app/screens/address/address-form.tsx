@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, ScrollView, KeyboardTypeOptions} from 'react-native';
+import {useLocalization} from '@fluent/react';
 import Navbar from '@components/common/navbar';
 import Button from '@components/common/button';
 import Input from '@components/common/input';
@@ -30,18 +31,19 @@ type FieldConfig = {
 };
 
 const FIELDS: FieldConfig[] = [
-  {name: 'first_name', label: 'First Name', required: true},
-  {name: 'last_name', label: 'Last Name', required: true},
-  {name: 'address_1', label: 'Address', required: true},
-  {name: 'company', label: 'Company', required: false},
-  {name: 'city', label: 'City', required: true},
-  {name: 'province', label: 'State/Province', required: true},
-  {name: 'postal_code', label: 'Postal Code', required: true},
-  {name: 'country_code', label: 'Country Code', required: true},
-  {name: 'phone', label: 'Phone', required: false, keyboardType: 'phone-pad'},
+  {name: 'first_name', label: 'first-name', required: true},
+  {name: 'last_name', label: 'last-name', required: true},
+  {name: 'address_1', label: 'address', required: true},
+  {name: 'company', label: 'company', required: false},
+  {name: 'city', label: 'city', required: true},
+  {name: 'province', label: 'province-or-state', required: true},
+  {name: 'postal_code', label: 'postal-code', required: true},
+  {name: 'country_code', label: 'country-code', required: true},
+  {name: 'phone', label: 'phone', required: false, keyboardType: 'phone-pad'},
 ];
 
 const AddressForm = ({route}: Props) => {
+  const {l10n} = useLocalization();
   const address = route.params?.address;
   const isEditing = !!address;
   const navigation = useNavigation();
@@ -90,7 +92,13 @@ const AddressForm = ({route}: Props) => {
 
   return (
     <View className="flex-1 bg-background p-safe">
-      <Navbar title={isEditing ? 'Edit Address' : 'Add Address'} />
+      <Navbar
+        title={
+          isEditing
+            ? l10n.getString('edit-address')
+            : l10n.getString('add-address')
+        }
+      />
       <View className="flex-1">
         <ScrollView className="flex-1">
           <View className="p-4">
@@ -101,11 +109,15 @@ const AddressForm = ({route}: Props) => {
                 name={field.name}
                 render={({field: {onChange, onBlur, value}}) => (
                   <Input
-                    label={field.label}
+                    label={l10n.getString(field.label)}
                     value={value}
                     onChangeText={onChange}
                     onBlur={onBlur}
-                    error={errors[field.name]?.message}
+                    error={
+                      errors[field.name]?.message
+                        ? l10n.getString(errors[field.name]?.message || '')
+                        : undefined
+                    }
                     required={field.required}
                     keyboardType={field.keyboardType}
                   />
@@ -116,7 +128,11 @@ const AddressForm = ({route}: Props) => {
         </ScrollView>
         <View className="p-4 border-t border-gray-200">
           <Button
-            title={isEditing ? 'Save Changes' : 'Add Address'}
+            title={
+              isEditing
+                ? l10n.getString('save-changes')
+                : l10n.getString('add-address')
+            }
             onPress={onSubmit}
             loading={addAddressMutation.isPending}
           />

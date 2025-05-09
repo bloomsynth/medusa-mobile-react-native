@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Switch} from 'react-native';
+import {useLocalization} from '@fluent/react';
 import Text from '@components/common/text';
 import Input from '@components/common/input';
 import {Controller, UseFormReturn} from 'react-hook-form';
@@ -13,6 +14,7 @@ type AddressStepProps = {
 };
 
 const AddressStep = ({form, isLoading, countries}: AddressStepProps) => {
+  const {l10n} = useLocalization();
   const {watch, clearErrors} = form;
   const useSameBilling = watch('use_same_billing');
 
@@ -23,7 +25,7 @@ const AddressStep = ({form, isLoading, countries}: AddressStepProps) => {
         name="email"
         render={({field: {onChange, value}}) => (
           <Input
-            label="Email"
+            label={l10n.getString('email')}
             value={value}
             onChangeText={val => {
               clearErrors('email');
@@ -38,7 +40,7 @@ const AddressStep = ({form, isLoading, countries}: AddressStepProps) => {
       />
 
       <AddressForm
-        title="Shipping Address"
+        title={l10n.getString('shipping-address')}
         form={form}
         type="shipping"
         isLoading={isLoading}
@@ -57,13 +59,13 @@ const AddressStep = ({form, isLoading, countries}: AddressStepProps) => {
             />
           )}
         />
-        <Text>Use same address for billing</Text>
+        <Text>{l10n.getString('use-same-address-for-billing')}</Text>
       </View>
 
       {!useSameBilling && (
         <View className="mt-4">
           <AddressForm
-            title="Billing Address"
+            title={l10n.getString('billing-address')}
             form={form}
             type="billing"
             isLoading={isLoading}

@@ -1,5 +1,6 @@
 import React from 'react';
 import {View} from 'react-native';
+import {useLocalization} from '@fluent/react';
 import Text from '@components/common/text';
 import Input from '@components/common/input';
 import {Picker} from '@react-native-picker/picker';
@@ -22,6 +23,7 @@ const AddressForm = ({
   isLoading,
   countries,
 }: AddressFormProps) => {
+  const {l10n} = useLocalization();
   const {
     control,
     formState: {errors},
@@ -50,7 +52,7 @@ const AddressForm = ({
         name={getFieldName('first_name')}
         render={({field: {onChange, value}}) => (
           <Input
-            label="First Name"
+            label={l10n.getString('first-name')}
             value={value as string}
             onChangeText={handleFieldChange('first_name', onChange)}
             error={addressErrors?.first_name?.message}
@@ -63,7 +65,7 @@ const AddressForm = ({
         name={getFieldName('last_name')}
         render={({field: {onChange, value}}) => (
           <Input
-            label="Last Name"
+            label={l10n.getString('last-name')}
             value={value as string}
             onChangeText={handleFieldChange('last_name', onChange)}
             error={addressErrors?.last_name?.message}
@@ -76,7 +78,7 @@ const AddressForm = ({
         name={getFieldName('address_1')}
         render={({field: {onChange, value}}) => (
           <Input
-            label="Address"
+            label={l10n.getString('address')}
             value={value as string}
             onChangeText={handleFieldChange('address_1', onChange)}
             error={addressErrors?.address_1?.message}
@@ -89,7 +91,9 @@ const AddressForm = ({
         name={getFieldName('company')}
         render={({field: {onChange, value}}) => (
           <Input
-            label="Company (Optional)"
+            label={`${l10n.getString('company')} (${l10n.getString(
+              'optional',
+            )})`}
             value={value as string}
             onChangeText={handleFieldChange('company', onChange)}
             error={addressErrors?.company?.message}
@@ -102,7 +106,7 @@ const AddressForm = ({
         name={getFieldName('postal_code')}
         render={({field: {onChange, value}}) => (
           <Input
-            label="Postal Code"
+            label={l10n.getString('postal-code')}
             value={value as string}
             onChangeText={handleFieldChange('postal_code', onChange)}
             error={addressErrors?.postal_code?.message}
@@ -115,7 +119,7 @@ const AddressForm = ({
         name={getFieldName('city')}
         render={({field: {onChange, value}}) => (
           <Input
-            label="City"
+            label={l10n.getString('city')}
             value={value as string}
             onChangeText={handleFieldChange('city', onChange)}
             error={addressErrors?.city?.message}
@@ -128,7 +132,9 @@ const AddressForm = ({
         name={getFieldName('province')}
         render={({field: {onChange, value}}) => (
           <Input
-            label="Province/State (Optional)"
+            label={`${l10n.getString('province-or-state')} (${l10n.getString(
+              'optional',
+            )})`}
             value={value as string}
             onChangeText={handleFieldChange('province', onChange)}
             error={addressErrors?.province?.message}
@@ -141,7 +147,9 @@ const AddressForm = ({
         name={getFieldName('country_code')}
         render={({field: {onChange, value}}) => (
           <View className="mb-4">
-            <Text className="text-sm font-content mb-2">Country</Text>
+            <Text className="text-sm font-content mb-2">
+              {l10n.getString('country')}
+            </Text>
             <View
               className={`border rounded-md ${
                 addressErrors?.country_code
@@ -155,7 +163,10 @@ const AddressForm = ({
                   onChange(val);
                 }}
                 enabled={!isLoading}>
-                <Picker.Item label="Select a country" value="" />
+                <Picker.Item
+                  label={l10n.getString('select-a-country')}
+                  value=""
+                />
                 {countries.map(country => (
                   <Picker.Item
                     key={country.value}
@@ -178,7 +189,7 @@ const AddressForm = ({
         name={getFieldName('phone')}
         render={({field: {onChange, value}}) => (
           <Input
-            label="Phone"
+            label={l10n.getString('phone')}
             value={value as string}
             onChangeText={handleFieldChange('phone', onChange)}
             error={addressErrors?.phone?.message}

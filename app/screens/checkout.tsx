@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {View, ScrollView, Alert} from 'react-native';
+import {useLocalization} from '@fluent/react';
 import {useCart} from '@data/cart-context';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 import Button from '@components/common/button';
@@ -31,6 +32,7 @@ import {StoreCartAddress} from '@medusajs/types';
 import utils from '@utils/common';
 
 const Checkout = () => {
+  const {l10n} = useLocalization();
   const {cart, updateCart, resetCart} = useCart();
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
@@ -148,10 +150,10 @@ const Checkout = () => {
 
   const handlePaymentSubmit = async () => {
     if (!selectedPaymentProviderId) {
-      throw new Error('Please select a payment method');
+      throw new Error(l10n.getString('please-select-a-payment-method'));
     }
     if (!cart) {
-      throw new Error('No cart found');
+      throw new Error(l10n.getString('no-cart-found'));
     }
 
     await apiClient.store.payment.initiatePaymentSession(cart, {
@@ -162,7 +164,7 @@ const Checkout = () => {
 
   const handleOrderComplete = async () => {
     if (!cart?.id) {
-      throw new Error('No cart found');
+      throw new Error(l10n.getString('no-cart-found'));
     }
 
     const selectedProvider = selectedPaymentProviderId
@@ -175,13 +177,15 @@ const Checkout = () => {
           // TODO: Implement Stripe payment flow
           break;
         default:
-          throw new Error('Payment provider not supported');
+          throw new Error(l10n.getString('payment-provider-not-supported'));
       }
     } else {
       const response = await apiClient.store.cart.complete(cart.id);
 
       if (response.type === 'cart') {
-        throw new Error(response.error?.message || 'Failed to complete order');
+        throw new Error(
+          response.error?.message || l10n.getString('failed-to-complete-order'),
+        );
       }
       await resetCart();
       navigation.dispatch(
@@ -221,8 +225,10 @@ const Checkout = () => {
     } catch (error) {
       console.error('Error:', error);
       Alert.alert(
-        'Error',
-        error instanceof Error ? error.message : 'An error occurred',
+        l10n.getString('error'),
+        error instanceof Error
+          ? error.message
+          : l10n.getString('an-error-occurred'),
       );
     } finally {
       setIsLoading(false);
@@ -234,23 +240,25 @@ const Checkout = () => {
       PAYMENT_PROVIDER_DETAILS_MAP[selectedPaymentProviderId ?? ''];
 
     if (selectedProvider?.hasExternalStep) {
-      return `Pay using ${selectedProvider.name}`;
+      return l10n.getString('pay-using-provider', {
+        provider: selectedProvider.name,
+      });
     }
-    return 'Place Order';
+    return l10n.getString('place-order');
   };
 
   const getCtaText = () => {
     switch (activeStep) {
       case 'address':
-        return 'Continue to Delivery';
+        return l10n.getString('continue-to-delivery');
       case 'delivery':
-        return 'Continue to Payment';
+        return l10n.getString('continue-to-payment');
       case 'payment':
-        return 'Review Order';
+        return l10n.getString('review-order');
       case 'review':
         return getReviewStepCtaText();
       default:
-        return 'Continue';
+        return l10n.getString('continue');
     }
   };
 
@@ -258,7 +266,7 @@ const Checkout = () => {
     <View className="flex-1 bg-background p-safe">
       <View className="flex-1">
         <View className="mb-4">
-          <Navbar title="Checkout" />
+          <Navbar title={l10n.getString('checkout')} />
         </View>
         <CheckoutSteps currentStep={activeStep} onStepPress={handleStepPress} />
         <ScrollView className="flex-1 px-4" contentContainerClassName="pb-4">

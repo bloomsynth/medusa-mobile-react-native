@@ -27,9 +27,11 @@ import ProfileDetail from '@screens/profile/profile-detail';
 import {CartProvider} from '@data/cart-context';
 import {RegionProvider} from '@data/region-context';
 import {CustomerProvider} from '@data/customer-context';
+import {LocaleProvider} from '@data/locale-context';
 import AddressForm from '@screens/address/address-form';
 import AddressList from '@screens/address/address-list';
 import RegionSelect from '@screens/region-select';
+import Settings from '@screens/settings';
 
 import '@styles/global.css';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
@@ -41,19 +43,21 @@ const queryClient = new QueryClient();
 export default function App() {
   return (
     <ThemeProvider name="default">
-      <RegionProvider>
-        <CartProvider>
-          <CustomerProvider>
-            <QueryClientProvider client={queryClient}>
-              <GestureHandlerRootView>
-                <SafeAreaProvider>
-                  <Navigation />
-                </SafeAreaProvider>
-              </GestureHandlerRootView>
-            </QueryClientProvider>
-          </CustomerProvider>
-        </CartProvider>
-      </RegionProvider>
+      <LocaleProvider>
+        <RegionProvider>
+          <CartProvider>
+            <CustomerProvider>
+              <QueryClientProvider client={queryClient}>
+                <GestureHandlerRootView>
+                  <SafeAreaProvider>
+                    <Navigation />
+                  </SafeAreaProvider>
+                </GestureHandlerRootView>
+              </QueryClientProvider>
+            </CustomerProvider>
+          </CartProvider>
+        </RegionProvider>
+      </LocaleProvider>
     </ThemeProvider>
   );
 }
@@ -61,10 +65,30 @@ export default function App() {
 const HomeTabs = createBottomTabNavigator({
   tabBar: props => <TabBar {...props} />,
   screens: {
-    Home: Home,
-    Categories: Categories,
-    Collections: Collections,
-    Profile: Profile,
+    Home: {
+      screen: Home,
+      options: {
+        title: 'home',
+      },
+    },
+    Categories: {
+      screen: Categories,
+      options: {
+        title: 'categories',
+      },
+    },
+    Collections: {
+      screen: Collections,
+      options: {
+        title: 'collections',
+      },
+    },
+    Profile: {
+      screen: Profile,
+      options: {
+        title: 'profile',
+      },
+    },
   },
   screenOptions: {
     headerShown: false,
@@ -93,6 +117,7 @@ const RootStack = createNativeStackNavigator({
         ProfileDetail,
         AddressList,
         AddressForm,
+        Settings,
       },
     },
     Modal: {

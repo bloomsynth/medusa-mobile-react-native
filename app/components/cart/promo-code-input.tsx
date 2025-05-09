@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {View, TouchableOpacity, Keyboard} from 'react-native';
+import {useLocalization} from '@fluent/react';
 import {useCart} from '@data/cart-context';
 import Input from '@components/common/input';
 import RoundedButton from '@components/common/rounded-button';
@@ -16,6 +17,7 @@ import {useSharedValue} from 'react-native-reanimated';
 type Promotion = HttpTypes.StorePromotion;
 
 const PromoCodeInput = () => {
+  const {l10n} = useLocalization();
   const [code, setCode] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -44,10 +46,10 @@ const PromoCodeInput = () => {
       if (applied) {
         setCode('');
       } else {
-        setError('Invalid promo code');
+        setError(l10n.getString('invalid-promo-code'));
       }
     } catch (err: any) {
-      setError(err?.message || 'Failed to apply promotion code');
+      setError(err?.message || l10n.getString('failed-to-apply-promotion'));
     } finally {
       setIsLoading(false);
     }
@@ -61,7 +63,7 @@ const PromoCodeInput = () => {
     try {
       await removePromoCode(promoCode);
     } catch (err: any) {
-      setError(err?.message || 'Failed to remove promotion code');
+      setError(err?.message || l10n.getString('failed-to-remove-promotion'));
     } finally {
       setIsLoading(false);
     }
@@ -78,7 +80,7 @@ const PromoCodeInput = () => {
           }}>
           <Text
             className={`text-primary ${isExpanded.value ? 'mb-2' : 'mb-4'}`}>
-            Add a Promo Code
+            {l10n.getString('add-a-promo-code')}
           </Text>
         </TouchableOpacity>
 
@@ -86,7 +88,7 @@ const PromoCodeInput = () => {
           <View className="flex-row gap-2">
             <View className="flex-1">
               <Input
-                placeholder="Enter promo code"
+                placeholder={l10n.getString('enter-promo-code')}
                 value={code}
                 onChangeText={handleCodeChange}
                 autoCapitalize="characters"
@@ -98,7 +100,7 @@ const PromoCodeInput = () => {
                 variant="secondary"
                 onPress={handleApplyCode}
                 loading={isLoading}
-                title="Apply"
+                title={l10n.getString('apply')}
               />
             </View>
           </View>
@@ -107,7 +109,9 @@ const PromoCodeInput = () => {
 
       {promotions && promotions.length > 0 && (
         <View>
-          <Text className="text-base mb-1">Applied Promotions:</Text>
+          <Text className="text-base mb-1">
+            {l10n.getString('applied-promotions')}:
+          </Text>
           {promotions.map((promotion, index) => (
             <View
               key={promotion.id}

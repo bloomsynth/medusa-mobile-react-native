@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, ScrollView, TouchableOpacity} from 'react-native';
+import {useLocalization} from '@fluent/react';
 import Text from '@components/common/text';
 import MaterialIcon from '@react-native-vector-icons/material-design-icons';
 import {useColors} from '@styles/hooks';
@@ -13,27 +14,31 @@ type ProfileOptionType = {
     | 'account-details'
     | 'text-box-multiple-outline'
     | 'map-marker-outline'
+    | 'cog-outline'
     | 'logout';
   label: string;
   onPress?: () => void;
 };
 
 const Profile = () => {
+  const {l10n} = useLocalization();
   const navigation = useNavigation();
   const {customer, logout} = useCustomer();
 
   if (!customer) {
     return (
       <View className="flex-1 bg-background p-safe">
-        <Navbar title="Profile" showBackButton={false} />
+        <Navbar title={l10n.getString('profile')} showBackButton={false} />
         <View className="flex-1 justify-center items-center p-4">
           <Text className="text-lg text-content mb-4 text-center">
-            Sign in to view your profile and orders
+            {l10n.getString('sign-in-to-view-your-profile')}
           </Text>
           <TouchableOpacity
             onPress={() => navigation.navigate('SignIn')}
             className="bg-primary px-8 py-4 rounded-lg">
-            <Text className="text-white font-medium">Sign In</Text>
+            <Text className="text-white font-medium">
+              {l10n.getString('sign-in')}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -52,22 +57,27 @@ const Profile = () => {
   const options: ProfileOptionType[] = [
     {
       icon: 'account-details',
-      label: 'Profile Information',
+      label: l10n.getString('profile-information'),
       onPress: () => navigation.navigate('ProfileDetail'),
     },
     {
       icon: 'text-box-multiple-outline',
-      label: 'Orders',
+      label: l10n.getString('orders'),
       onPress: () => navigation.navigate('Orders'),
     },
     {
       icon: 'map-marker-outline',
-      label: 'Shipping Addresses',
+      label: l10n.getString('shipping-addresses'),
       onPress: () => navigation.navigate('AddressList'),
     },
     {
+      icon: 'cog-outline',
+      label: l10n.getString('settings'),
+      onPress: () => navigation.navigate('Settings'),
+    },
+    {
       icon: 'logout',
-      label: 'Logout',
+      label: l10n.getString('logout'),
       onPress: handleLogout,
     },
   ];
@@ -75,7 +85,7 @@ const Profile = () => {
   return (
     <View className="flex-1 bg-background p-safe">
       {/* Header */}
-      <Navbar title="Profile" showBackButton={false} />
+      <Navbar title={l10n.getString('profile')} showBackButton={false} />
 
       <ScrollView className="flex-1">
         {/* Profile Info Section */}

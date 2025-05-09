@@ -13,6 +13,7 @@ module.exports = {
           '@images': './app/images',
           '@screens': './app/screens',
           '@components': './app/components',
+          '@constants': './app/constants',
           '@api': './app/api',
           '@utils': './app/utils',
           '@data': './app/data',

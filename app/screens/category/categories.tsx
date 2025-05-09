@@ -1,11 +1,8 @@
 import React from 'react';
-import {
-  View,
-  FlatList,
-  TouchableOpacity,
-} from 'react-native';
+import {View, FlatList, TouchableOpacity} from 'react-native';
 import {useQuery} from '@tanstack/react-query';
 import {useNavigation} from '@react-navigation/native';
+import {useLocalization} from '@fluent/react';
 import Navbar from '@components/common/navbar';
 import Text from '@components/common/text';
 import {useColors} from '@styles/hooks';
@@ -16,6 +13,7 @@ import Loader from '@components/common/loader';
 import ErrorUI from '@components/common/error-ui';
 
 export default function Categories() {
+  const {l10n} = useLocalization();
   const colors = useColors();
   const navigation = useNavigation();
   const {data, isLoading, error} = useQuery({
@@ -51,7 +49,7 @@ export default function Categories() {
 
   return (
     <View className="flex-1 bg-background p-safe">
-      <Navbar title="Categories" showBackButton={false} />
+      <Navbar title={l10n.getString('categories')} showBackButton={false} />
       <View className="border-t border-gray-200">
         <FlatList
           data={data?.product_categories}
@@ -61,7 +59,7 @@ export default function Categories() {
           ListEmptyComponent={
             <View className="flex-1 items-center justify-center p-4">
               <Text className="text-base text-content text-center">
-                No categories found
+                {l10n.getString('no-categories-found')}
               </Text>
             </View>
           }

@@ -1,6 +1,7 @@
 import React, {PropsWithChildren, useMemo, useState} from 'react';
 import {useNavigation, type StaticScreenProps} from '@react-navigation/native';
 import {View} from 'react-native';
+import {useLocalization} from '@fluent/react';
 import AnimatedCartButton from '@components/cart/animated-cart-button';
 import apiClient from '@api/client';
 import {useQuery} from '@tanstack/react-query';
@@ -25,6 +26,7 @@ type Props = StaticScreenProps<{
 }>;
 
 function ProductScreen({route}: Props) {
+  const {l10n} = useLocalization();
   const {productId} = route.params;
   const {region} = useRegion();
   const {data, error, isPending} = useQuery({
@@ -228,31 +230,45 @@ const SelectVariant = ({
 };
 
 const ProductAttributes = ({product}: {product: any}) => {
+  const {l10n} = useLocalization();
+
   return (
     <View>
-      <Text className="text-xl mb-6 opacity-75">Product Information</Text>
+      <Text className="text-xl mb-6 opacity-75">
+        {l10n.getString('product-information')}
+      </Text>
       <View className="flex flex-row justify-between gap-x-8">
         <View className="flex flex-col flex-1 gap-y-4">
           <View>
-            <Text className="font-semibold opacity-75">Material</Text>
+            <Text className="font-semibold opacity-75">
+              {l10n.getString('material')}
+            </Text>
             <Text>{product.material ? product.material : '-'}</Text>
           </View>
           <View>
-            <Text className="font-semibold opacity-75">Country of origin</Text>
+            <Text className="font-semibold opacity-75">
+              {l10n.getString('country-of-origin')}
+            </Text>
             <Text>{product.origin_country ? product.origin_country : '-'}</Text>
           </View>
           <View>
-            <Text className="font-semibold opacity-75">Type</Text>
+            <Text className="font-semibold opacity-75">
+              {l10n.getString('type')}
+            </Text>
             <Text>{product.type ? product.type.value : '-'}</Text>
           </View>
         </View>
         <View className="flex flex-col flex-1 gap-y-4">
           <View>
-            <Text className="font-semibold opacity-75">Weight</Text>
+            <Text className="font-semibold opacity-75">
+              {l10n.getString('weight')}
+            </Text>
             <Text>{product.weight ? `${product.weight} g` : '-'}</Text>
           </View>
           <View>
-            <Text className="font-semibold opacity-75">Dimensions</Text>
+            <Text className="font-semibold opacity-75">
+              {l10n.getString('dimensions')}
+            </Text>
             <Text>
               {product.length && product.width && product.height
                 ? `${product.length}L x ${product.width}W x ${product.height}H`
@@ -266,16 +282,21 @@ const ProductAttributes = ({product}: {product: any}) => {
 };
 
 const Features = () => {
+  const {l10n} = useLocalization();
   const colors = useColors();
   return (
     <View className="flex-row gap-2">
       <FeatureWrapper>
         <Icon name="swap" size={30} color={colors.content} />
-        <Text className="text-sm font-content-bold">7 days return</Text>
+        <Text className="text-sm font-content-bold">
+          {l10n.getString('days-return', {count: 7})}
+        </Text>
       </FeatureWrapper>
       <FeatureWrapper>
         <Icon name="dingding" size={30} color={colors.content} />
-        <Text className="text-sm font-content-bold">Fast Delivery</Text>
+        <Text className="text-sm font-content-bold">
+          {l10n.getString('fast-delivery')}
+        </Text>
       </FeatureWrapper>
     </View>
   );

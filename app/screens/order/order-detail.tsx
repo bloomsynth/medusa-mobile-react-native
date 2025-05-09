@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, ScrollView, Image} from 'react-native';
+import {useLocalization} from '@fluent/react';
 import Text from '@components/common/text';
 import Navbar from '@components/common/navbar';
 import {useQuery} from '@tanstack/react-query';
@@ -24,6 +25,7 @@ type OrderDetailProps = {
 };
 
 const OrderDetail = ({route}: OrderDetailProps) => {
+  const {l10n} = useLocalization();
   const {orderId} = route.params;
   const navigation = useNavigation();
 
@@ -52,40 +54,50 @@ const OrderDetail = ({route}: OrderDetailProps) => {
   if (!order) {
     return (
       <View className="flex-1 bg-background p-safe">
-        <Navbar title="Order Details" />
-        <Text className="text-center text-gray-500 mt-6">Order not found</Text>
+        <Navbar title={l10n.getString('order-details')} />
+        <Text className="text-center text-gray-500 mt-6">
+          {l10n.getString('order-not-found')}
+        </Text>
       </View>
     );
   }
 
   return (
     <View className="flex-1 bg-background p-safe">
-      <Navbar title="Order Details" />
+      <Navbar title={l10n.getString('order-details')} />
       <ScrollView className="flex-1">
         <View className="p-4">
           {/* Order Header */}
           <View className="mb-6">
             <Text className="text-xl font-bold mb-1">
-              Order #{order.display_id}
+              {l10n.getString('order-with-id', {id: order.display_id || '-'})}
             </Text>
             <Text className="text-content opacity-60">
-              Placed {dayjs(order.created_at).format('MMMM D, YYYY h:mm A')}
+              {l10n.getString('placed-on', {
+                datetime: dayjs(order.created_at).format('MMMM D, YYYY h:mm A'),
+              })}
             </Text>
           </View>
 
           {/* Order Status */}
           <View className="mb-6">
-            <Text className="font-semibold mb-2 opacity-60">Status</Text>
+            <Text className="font-semibold mb-2 opacity-60">
+              {l10n.getString('status')}
+            </Text>
             <Text className="text-content">
-              {getFulfillmentStatus(
-                order.fulfillment_status as FulfillmentStatus,
+              {l10n.getString(
+                getFulfillmentStatus(
+                  order.fulfillment_status as FulfillmentStatus,
+                ),
               )}
             </Text>
           </View>
 
           {/* Order Items */}
           <View className="mb-6">
-            <Text className="font-semibold">Order Items</Text>
+            <Text className="font-semibold">
+              {l10n.getString('order-items')}
+            </Text>
             {order.items?.map(item => (
               <View
                 key={item.id}
@@ -134,7 +146,9 @@ const OrderDetail = ({route}: OrderDetailProps) => {
           {order.shipping_address && (
             <View className="flex-row justify-between mb-6">
               <View className="gap-1">
-                <Text className="opacity-60 mb-1">Shipping Address</Text>
+                <Text className="opacity-60 mb-1">
+                  {l10n.getString('shipping-address')}
+                </Text>
                 <Text>
                   {order.shipping_address.first_name}{' '}
                   {order.shipping_address.last_name}
@@ -156,7 +170,9 @@ const OrderDetail = ({route}: OrderDetailProps) => {
                 </Text>
               </View>
               <View className="gap-1">
-                <Text className="opacity-60 mb-1">Contact</Text>
+                <Text className="opacity-60 mb-1">
+                  {l10n.getString('contact')}
+                </Text>
                 <Text>{order.email}</Text>
                 {order.shipping_address?.phone && (
                   <Text>{order.shipping_address.phone}</Text>
@@ -167,7 +183,9 @@ const OrderDetail = ({route}: OrderDetailProps) => {
 
           <View className="mb-6">
             <View>
-              <Text className="opacity-60 mb-1">Method</Text>
+              <Text className="opacity-60 mb-1">
+                {l10n.getString('method')}
+              </Text>
               <Text>
                 Standard Shipping (
                 {convertToLocale({
@@ -181,9 +199,11 @@ const OrderDetail = ({route}: OrderDetailProps) => {
 
           {/* Order Summary */}
           <View className="mb-6">
-            <Text className="text-lg mb-2">Order Summary</Text>
+            <Text className="text-lg mb-2">
+              {l10n.getString('order-summary')}
+            </Text>
             <View className="flex-row justify-between mb-2">
-              <Text className="opacity-60">Subtotal</Text>
+              <Text className="opacity-60">{l10n.getString('subtotal')}</Text>
               <Text>
                 {convertToLocale({
                   amount: order.subtotal,
@@ -192,7 +212,7 @@ const OrderDetail = ({route}: OrderDetailProps) => {
               </Text>
             </View>
             <View className="flex-row justify-between mb-2">
-              <Text className="opacity-60">Shipping</Text>
+              <Text className="opacity-60">{l10n.getString('shipping')}</Text>
               <Text>
                 {convertToLocale({
                   amount: order.shipping_total,
@@ -202,7 +222,7 @@ const OrderDetail = ({route}: OrderDetailProps) => {
             </View>
             {order.discount_total > 0 && (
               <View className="flex-row justify-between mb-2">
-                <Text className="opacity-60">Discount</Text>
+                <Text className="opacity-60">{l10n.getString('discount')}</Text>
                 <Text className="text-green-600">
                   -
                   {convertToLocale({
@@ -213,7 +233,7 @@ const OrderDetail = ({route}: OrderDetailProps) => {
               </View>
             )}
             <View className="flex-row justify-between mb-2">
-              <Text className="opacity-60">Taxes</Text>
+              <Text className="opacity-60">{l10n.getString('taxes')}</Text>
               <Text>
                 {order.tax_total
                   ? convertToLocale({
@@ -224,7 +244,9 @@ const OrderDetail = ({route}: OrderDetailProps) => {
               </Text>
             </View>
             <View className="flex-row justify-between mt-2 pt-2 border-t border-primary">
-              <Text className="font-content-bold text-lg">Total</Text>
+              <Text className="font-content-bold text-lg">
+                {l10n.getString('total')}
+              </Text>
               <Text className="font-content-bold text-lg">
                 {convertToLocale({
                   amount: order.total,
@@ -237,7 +259,7 @@ const OrderDetail = ({route}: OrderDetailProps) => {
       </ScrollView>
       <View className="p-4 bg-background-secondary">
         <Button
-          title="Continue Shopping"
+          title={l10n.getString('continue-shopping')}
           onPress={() => {
             navigation.navigate('Main');
           }}

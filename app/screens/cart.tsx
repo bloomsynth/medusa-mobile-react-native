@@ -5,9 +5,11 @@ import {useCart} from '@data/cart-context';
 import {ScrollView, View} from 'react-native';
 import Button from '@components/common/button';
 import {useNavigation} from '@react-navigation/native';
+import {useLocalization} from '@fluent/react';
 import CartContent from '@components/cart/cart-content';
 
 const Cart = () => {
+  const {l10n} = useLocalization();
   const {cart} = useCart();
   const isEmptyCart = !cart?.items || cart.items.length === 0;
 
@@ -23,7 +25,7 @@ const Cart = () => {
   return (
     <View className="flex-1 bg-background p-safe">
       <ScrollView className="flex-1" keyboardShouldPersistTaps="handled">
-        <Navbar title="Cart" />
+        <Navbar title={l10n.getString('cart')} />
         <View className="p-4">
           {!isEmptyCart ? (
             <CartContent cart={cart} mode="cart" />
@@ -34,9 +36,9 @@ const Cart = () => {
       </ScrollView>
       <View className="p-4 bg-background-secondary">
         {!isEmptyCart ? (
-          <Button title="Checkout" onPress={goToCheckout} />
+          <Button title={l10n.getString('checkout')} onPress={goToCheckout} />
         ) : (
-          <Button title="Go Home" onPress={goHome} />
+          <Button title={l10n.getString('go-home')} onPress={goHome} />
         )}
       </View>
     </View>
@@ -44,11 +46,11 @@ const Cart = () => {
 };
 
 const EmptyCart = () => {
+  const {l10n} = useLocalization();
   return (
     <View className="px-4 mt-20">
       <Text className="text-lg text-center">
-        You don't have anything in your cart.{'\n'}Use the link below to start
-        below to start browsing our products.
+        {l10n.getString('you-dont-have-anything-in-your-cart')}
       </Text>
     </View>
   );

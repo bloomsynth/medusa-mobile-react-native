@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, ScrollView, TouchableOpacity, RefreshControl} from 'react-native';
+import {useLocalization} from '@fluent/react';
 import Text from '@components/common/text';
 import Navbar from '@components/common/navbar';
 import {useCustomer} from '@data/customer-context';
@@ -15,6 +16,7 @@ import {useCountries} from '@data/region-context';
 import utils from '@utils/common';
 
 const AddressList = () => {
+  const {l10n} = useLocalization();
   const {customer} = useCustomer();
   const colors = useColors();
   const queryClient = useQueryClient();
@@ -90,9 +92,9 @@ const AddressList = () => {
   if (!customer) {
     return (
       <View className="flex-1 bg-background p-safe">
-        <Navbar title="Addresses" />
+        <Navbar title={l10n.getString('addresses')} />
         <Text className="text-center text-gray-500 mt-6">
-          Please sign in to view your addresses
+          {l10n.getString('please-sign-in-to-view-your-address')}
         </Text>
       </View>
     );
@@ -100,7 +102,7 @@ const AddressList = () => {
 
   return (
     <View className="flex-1 bg-background p-safe">
-      <Navbar title="Addresses" />
+      <Navbar title={l10n.getString('addresses')} />
       <View className="flex-1">
         <ScrollView
           className="flex-1"
@@ -115,14 +117,14 @@ const AddressList = () => {
             {data?.map(renderAddressCard)}
             {data?.length === 0 && (
               <Text className="text-center text-gray-500">
-                No addresses found
+                {l10n.getString('no-addresses-found')}
               </Text>
             )}
           </View>
         </ScrollView>
         <View className="p-4 border-t border-gray-200">
           <Button
-            title="Add New Address"
+            title={l10n.getString('add-new-address')}
             // @ts-ignore
             onPress={() => navigation.navigate('AddressForm')}
           />

@@ -1,18 +1,20 @@
 import React, {useState, useEffect} from 'react';
 import {View, TouchableOpacity, ActivityIndicator} from 'react-native';
+import {useLocalization} from '@fluent/react';
 import Text from '@components/common/text';
 import {useColors} from '@styles/hooks';
 import {useQuery} from '@tanstack/react-query';
 import {HttpTypes} from '@medusajs/types';
 import apiClient from '@api/client';
 import {convertToLocale} from '@utils/product-price';
-import { useCart } from '@data/cart-context';
+import {useCart} from '@data/cart-context';
 
 type ShippingStepProps = {
   cart: HttpTypes.StoreCart;
 };
 
 const ShippingStep = ({cart}: ShippingStepProps) => {
+  const {l10n} = useLocalization();
   const colors = useColors();
   const [calculatedPricesMap, setCalculatedPricesMap] = useState<
     Record<string, number>
@@ -30,7 +32,7 @@ const ShippingStep = ({cart}: ShippingStepProps) => {
       queryKey: ['shipping-options', cart?.id],
       queryFn: async () => {
         if (!cart?.id) {
-          throw new Error('No cart ID');
+          throw new Error(l10n.getString('no-cart-id'));
         }
         const {shipping_options} =
           await apiClient.store.fulfillment.listCartOptions({
@@ -103,7 +105,7 @@ const ShippingStep = ({cart}: ShippingStepProps) => {
       await setShippingMethod(id);
       setSelectedMethodId(id);
     } catch (err) {
-      setError('Failed to update shipping method');
+      setError(l10n.getString('failed-to-update-shipping-method'));
       console.error(err);
     } finally {
       setUpdatingOptionId(null);
@@ -113,14 +115,18 @@ const ShippingStep = ({cart}: ShippingStepProps) => {
   if (isLoadingShippingOptions || !shippingOptions?.length) {
     return (
       <View className="flex-1 items-center justify-center">
-        <Text className="text-gray-500">Loading shipping options...</Text>
+        <Text className="text-gray-500">
+          {l10n.getString('loading-shipping-options')}...
+        </Text>
       </View>
     );
   }
 
   return (
     <View className="space-y-6">
-      <Text className="text-2xl mb-4">Select Shipping Method</Text>
+      <Text className="text-2xl mb-4">
+        {l10n.getString('select-shipping-method')}
+      </Text>
       {error && (
         <Text className="text-red-500 mb-4" testID="shipping-error">
           {error}
@@ -162,7 +168,7 @@ const ShippingStep = ({cart}: ShippingStepProps) => {
               ) : (
                 <Text>
                   {isCalculated && isCalculatingPrices
-                    ? 'Calculating...'
+                    ? `${l10n.getString('calculating')}...`
                     : amount !== undefined
                     ? convertToLocale({
                         amount,

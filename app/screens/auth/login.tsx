@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {View, TouchableOpacity, Keyboard} from 'react-native';
+import {useLocalization} from '@fluent/react';
 import Text from '@components/common/text';
 import Input from '@components/common/input';
 import {useCustomer} from '@data/customer-context';
@@ -11,13 +12,14 @@ import {zodResolver} from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
 const signInSchema = z.object({
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(3, 'Password must be at least 3 characters'),
+  email: z.string().email('invalid-email-address'),
+  password: z.string().min(3, 'password-must-be-at-least-n-characters'),
 });
 
 type SignInSchema = z.infer<typeof signInSchema>;
 
 const SignIn = () => {
+  const {l10n} = useLocalization();
   const [loading, setLoading] = useState(false);
   const {login} = useCustomer();
   const navigation = useNavigation();
@@ -59,7 +61,7 @@ const SignIn = () => {
         message:
           err instanceof Error
             ? err.message
-            : 'Invalid credentials. Please try again.',
+            : l10n.getString('invalid-credentials'),
       });
     } finally {
       setLoading(false);
@@ -68,7 +70,7 @@ const SignIn = () => {
 
   return (
     <View className="flex-1 bg-background p-safe">
-      <Navbar title="Sign In" />
+      <Navbar title={l10n.getString('sign-in')} />
 
       <View className="p-4 flex-1">
         <View className="gap-4">
@@ -83,13 +85,17 @@ const SignIn = () => {
             name="email"
             render={({field: {onChange, value}}) => (
               <Input
-                label="Email"
-                placeholder="Enter your email"
+                label={l10n.getString('email')}
+                placeholder={l10n.getString('enter-your-email')}
                 value={value}
                 onChangeText={onChange}
                 autoCapitalize="none"
                 keyboardType="email-address"
-                error={errors.email?.message}
+                error={
+                  errors.email?.message
+                    ? l10n.getString(errors.email.message)
+                    : undefined
+                }
                 containerClassName="mb-0"
               />
             )}
@@ -100,12 +106,18 @@ const SignIn = () => {
             name="password"
             render={({field: {onChange, value}}) => (
               <Input
-                label="Password"
-                placeholder="Enter your password"
+                label={l10n.getString('password')}
+                placeholder={l10n.getString('enter-your-password')}
                 value={value}
                 onChangeText={onChange}
                 secureTextEntry
-                error={errors.password?.message}
+                error={
+                  errors.password?.message
+                    ? l10n.getString(errors.password.message, {
+                        n: 3,
+                      })
+                    : undefined
+                }
                 containerClassName="mb-0"
               />
             )}
@@ -114,12 +126,14 @@ const SignIn = () => {
           <Button
             onPress={handleSubmit(onSubmit)}
             loading={loading}
-            title={loading ? 'Signing in...' : 'Sign In'}
+            title={
+              loading ? l10n.getString('signing-in') : l10n.getString('sign-in')
+            }
           />
 
           <TouchableOpacity onPress={() => navigation.navigate('Register')}>
             <Text className="text-base text-center text-primary">
-              Don't have an account? Register
+              {l10n.getString('dont-have-an-account')}
             </Text>
           </TouchableOpacity>
         </View>

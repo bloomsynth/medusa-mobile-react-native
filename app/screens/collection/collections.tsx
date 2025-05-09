@@ -2,6 +2,7 @@ import React from 'react';
 import {View, FlatList, TouchableOpacity} from 'react-native';
 import {useQuery} from '@tanstack/react-query';
 import {useNavigation} from '@react-navigation/native';
+import {useLocalization} from '@fluent/react';
 import Navbar from '@components/common/navbar';
 import Text from '@components/common/text';
 import {useColors} from '@styles/hooks';
@@ -13,6 +14,7 @@ import ErrorUI from '@components/common/error-ui';
 import FeaturedCollection from '@components/home/featured-collection';
 
 export default function Collections() {
+  const {l10n} = useLocalization();
   const colors = useColors();
   const navigation = useNavigation();
   const {data, isLoading, error} = useQuery({
@@ -43,7 +45,7 @@ export default function Collections() {
 
   return (
     <View className="flex-1 bg-background p-safe">
-      <Navbar title="Collections" showBackButton={false} />
+      <Navbar title={l10n.getString('collections')} showBackButton={false} />
 
       <View className="border-t border-gray-200 mb-4">
         <FlatList
@@ -54,14 +56,17 @@ export default function Collections() {
           ListEmptyComponent={
             <View className="flex-1 items-center justify-center p-4">
               <Text className="text-base text-content text-center">
-                No collections found
+                {l10n.getString('no-collections-found')}
               </Text>
             </View>
           }
         />
       </View>
       <View className="px-5">
-        <FeaturedCollection name="Trending Products" showCta={false} />
+        <FeaturedCollection
+          name={l10n.getString('trending-products')}
+          showCta={false}
+        />
       </View>
     </View>
   );

@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, TouchableOpacity} from 'react-native';
+import {useLocalization} from '@fluent/react';
 import Text from '@components/common/text';
 import AntDesign from '@react-native-vector-icons/ant-design';
 import {useColors} from '@styles/hooks';
@@ -11,6 +12,7 @@ type CheckoutStepsProps = {
 };
 
 const CheckoutSteps = ({currentStep, onStepPress}: CheckoutStepsProps) => {
+  const {l10n} = useLocalization();
   const colors = useColors();
 
   const getStepBackground = (isActive: boolean, isPast: boolean) => {
@@ -45,14 +47,17 @@ const CheckoutSteps = ({currentStep, onStepPress}: CheckoutStepsProps) => {
               disabled={!isPast}
               className="items-center">
               <View
-                className={`w-8 h-8 rounded-full items-center justify-center ${
-                  getStepBackground(isActive, isPast)
-                }`}>
+                className={`w-8 h-8 rounded-full items-center justify-center ${getStepBackground(
+                  isActive,
+                  isPast,
+                )}`}>
                 <AntDesign
                   name={step.icon}
                   size={16}
                   color={
-                    isActive || isPast ? colors.contentSecondary : colors.content
+                    isActive || isPast
+                      ? colors.contentSecondary
+                      : colors.content
                   }
                 />
               </View>
@@ -60,7 +65,7 @@ const CheckoutSteps = ({currentStep, onStepPress}: CheckoutStepsProps) => {
                 className={`text-xs mt-1 ${
                   isActive ? 'text-primary font-content-bold' : 'text-gray-500'
                 }`}>
-                {step.title}
+                {l10n.getString(step.title)}
               </Text>
             </TouchableOpacity>
           </React.Fragment>

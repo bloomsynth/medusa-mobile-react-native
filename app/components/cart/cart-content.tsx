@@ -1,6 +1,7 @@
 import {StoreCart} from '@medusajs/types';
 import React from 'react';
 import {Image, View} from 'react-native';
+import {useLocalization} from '@fluent/react';
 import Text from '@components/common/text';
 import {HttpTypes} from '@medusajs/types';
 import LineItemQuantity from '@components/cart/line-item-quantity';
@@ -61,6 +62,8 @@ type CartItemProps = {
 };
 
 const CartItem = ({item, currencyCode, mode}: CartItemProps) => {
+  const {l10n} = useLocalization();
+
   return (
     <View className="flex flex-row gap-2 p-2 mb-2 bg-background-secondary rounded-lg items-center">
       <Image
@@ -73,7 +76,7 @@ const CartItem = ({item, currencyCode, mode}: CartItemProps) => {
         </Text>
         {!!item.variant_title && (
           <Text className="text-base opacity-80">
-            Variant: {item.variant_title}
+            {l10n.getString('variant')}: {item.variant_title}
           </Text>
         )}
         <View className="mt-2 flex-1 flex-row justify-between">
@@ -95,20 +98,21 @@ type SummaryItem = {
 };
 
 const CartSummary = ({cart}: {cart?: StoreCart}) => {
+  const {l10n} = useLocalization();
   if (!cart) {
     return null;
   }
   const summaryItems: SummaryItem[] = [
     {
-      name: 'Subtotal',
+      name: l10n.getString('subtotal'),
       key: 'item_subtotal',
     },
     {
-      name: 'Shipping',
+      name: l10n.getString('shipping'),
       key: 'shipping_total',
     },
     {
-      name: 'Taxes',
+      name: l10n.getString('taxes'),
       key: 'tax_total',
     },
   ];
@@ -117,7 +121,7 @@ const CartSummary = ({cart}: {cart?: StoreCart}) => {
 
   return (
     <View>
-      <Text className="text-2xl mb-4">Summary</Text>
+      <Text className="text-2xl mb-4">{l10n.getString('summary')}</Text>
       <View className="border-t border-gray-300 py-4">
         {summaryItems.map(item => (
           <View
@@ -134,7 +138,7 @@ const CartSummary = ({cart}: {cart?: StoreCart}) => {
         ))}
         {discountTotal > 0 && (
           <View className="flex-row justify-between items-center">
-            <Text className="opacity-80">Discount</Text>
+            <Text className="opacity-80">{l10n.getString('discount')}</Text>
             <Text className="text-base text-green-500">
               -
               {convertToLocale({
@@ -147,7 +151,7 @@ const CartSummary = ({cart}: {cart?: StoreCart}) => {
       </View>
       <View className="border-t border-b border-gray-300 py-4">
         <View className="flex-row justify-between items-center">
-          <Text className="opacity-80">Total</Text>
+          <Text className="opacity-80">{l10n.getString('total')}</Text>
           <Text className="text-lg font-content-bold">
             {convertToLocale({
               amount: cart.total,

@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {View, TouchableOpacity} from 'react-native';
+import {useLocalization} from '@fluent/react';
 import Text from '@components/common/text';
 import {useQuery} from '@tanstack/react-query';
 import {HttpTypes} from '@medusajs/types';
@@ -20,6 +21,7 @@ const PaymentStep = ({
   selectedProviderId,
   onSelectProvider,
 }: PaymentStepProps) => {
+  const {l10n} = useLocalization();
   const [error, setError] = useState<string | null>(null);
 
   // Fetch available payment providers
@@ -27,7 +29,7 @@ const PaymentStep = ({
     queryKey: ['payment-providers', cart?.region_id],
     queryFn: async () => {
       if (!cart?.region_id) {
-        throw new Error('No region ID');
+        throw new Error(l10n.getString('no-region-id'));
       }
       const {payment_providers} =
         await apiClient.store.payment.listPaymentProviders({
@@ -56,21 +58,26 @@ const PaymentStep = ({
     switch (selectedProviderId) {
       case 'pp_stripe_stripe':
         return (
-          <Text className="text-content">Stripe payment UI coming soon!</Text>
+          <Text className="text-content">
+            {l10n.getString('stripe-payment-coming-soon')}
+          </Text>
         );
       case 'pp_system_default':
         return (
           <Text className="text-content">
-            No additional actions required for manual payment.
+            {l10n.getString(
+              'no-additional-actions-required-for-manual-payment',
+            )}
           </Text>
         );
       default:
         return (
           <Text className="text-content">
-            Payment provider{' '}
-            {PAYMENT_PROVIDER_DETAILS_MAP[selectedProviderId]?.name ||
-              selectedProviderId}{' '}
-            is in development.
+            {l10n.getString('payment-provider-is-in-development', {
+              provider:
+                PAYMENT_PROVIDER_DETAILS_MAP[selectedProviderId]?.name ||
+                selectedProviderId,
+            })}
           </Text>
         );
     }
@@ -79,14 +86,18 @@ const PaymentStep = ({
   if (isLoadingProviders || !paymentProviders?.length) {
     return (
       <View className="flex-1 items-center justify-center">
-        <Text className="text-gray-500">Loading payment options...</Text>
+        <Text className="text-gray-500">
+          {l10n.getString('loading-shipping-options')}...
+        </Text>
       </View>
     );
   }
 
   return (
     <View className="space-y-6">
-      <Text className="text-2xl mb-4">Select Payment Method</Text>
+      <Text className="text-2xl mb-4">
+        {l10n.getString('select-payment-method')}
+      </Text>
       {error && (
         <Text className="text-red-500 mb-4" testID="payment-error">
           {error}
@@ -121,7 +132,9 @@ const PaymentStep = ({
         })}
       </View>
       {selectedProviderId && (
-        <View className="mt-6 p-4 bg-background-secondary rounded-lg">{getPaymentUI()}</View>
+        <View className="mt-6 p-4 bg-background-secondary rounded-lg">
+          {getPaymentUI()}
+        </View>
       )}
     </View>
   );

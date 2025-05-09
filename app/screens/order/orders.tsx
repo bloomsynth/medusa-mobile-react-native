@@ -6,6 +6,7 @@ import {
   RefreshControl,
   Image,
 } from 'react-native';
+import {useLocalization} from '@fluent/react';
 import Text from '@components/common/text';
 import Navbar from '@components/common/navbar';
 import {useCustomer} from '@data/customer-context';
@@ -21,7 +22,7 @@ import {convertToLocale} from '@utils/product-price';
 import {useNavigation} from '@react-navigation/native';
 import {getFulfillmentStatus, type FulfillmentStatus} from '@utils/order';
 
-import { useColors } from '@styles/hooks';
+import {useColors} from '@styles/hooks';
 dayjs.extend(relativeTime);
 
 type Order = HttpTypes.StoreOrder;
@@ -29,6 +30,7 @@ type Order = HttpTypes.StoreOrder;
 const MAX_THUMBNAILS = 5;
 
 const OrdersScreen = () => {
+  const {l10n} = useLocalization();
   const {customer} = useCustomer();
   const navigation = useNavigation();
 
@@ -53,14 +55,20 @@ const OrdersScreen = () => {
         className="bg-background rounded-lg p-4 mb-4 border border-primary"
         onPress={() => handleOrderPress(item.id)}>
         <View className="flex-row justify-between mb-2">
-          <Text className="text-base font-bold">Order #{item.display_id}</Text>
+          <Text className="text-base font-bold">
+            {l10n.getString('order-with-id', {id: item.display_id ?? '-'})}
+          </Text>
           <Text className="text-sm text-gray-500">
             {dayjs(item.created_at).fromNow()}
           </Text>
         </View>
         <View className="flex-row justify-between mb-2">
           <Text className="text-sm text-gray-700">
-            {getFulfillmentStatus(item.fulfillment_status as FulfillmentStatus)}
+            {l10n.getString(
+              getFulfillmentStatus(
+                item.fulfillment_status as FulfillmentStatus,
+              ),
+            )}
           </Text>
           <Text className="text-base font-semibold">
             {convertToLocale({
@@ -86,19 +94,24 @@ const OrdersScreen = () => {
             </View>
             {remainingItems > 0 && (
               <Text className="text-sm text-gray-500 ml-2">
-                +{remainingItems} more
+                {l10n.getString('remaining-items', {
+                  count: String(remainingItems),
+                })}
               </Text>
             )}
           </View>
           <TouchableOpacity
             onPress={() => handleOrderPress(item.id)}
             className="bg-primary rounded-lg p-3">
-            <Text className="text-content-secondary">View</Text>
+            <Text className="text-content-secondary">
+              {l10n.getString('view')}
+            </Text>
           </TouchableOpacity>
         </View>
         <Text className="text-sm text-gray-500 mt-2">
-          {item.items?.length || 0}{' '}
-          {(item.items?.length || 0) === 1 ? 'item' : 'items'}
+          {l10n.getString('count-items', {
+            count: String(item.items?.length || 0),
+          })}
         </Text>
       </TouchableOpacity>
     );
@@ -107,9 +120,9 @@ const OrdersScreen = () => {
   if (!customer) {
     return (
       <View className="flex-1 bg-background">
-        <Navbar title="Orders" />
+        <Navbar title={l10n.getString('orders')} />
         <Text className="text-center text-gray-500 mt-6">
-          Please sign in to view your orders
+          {l10n.getString('sign-in-to-view-orders')}
         </Text>
       </View>
     );
@@ -118,7 +131,7 @@ const OrdersScreen = () => {
   if (isPending) {
     return (
       <View className="flex-1 bg-background">
-        <Navbar title="Orders" />
+        <Navbar title={l10n.getString('orders')} />
         <Loader />
       </View>
     );
@@ -127,7 +140,7 @@ const OrdersScreen = () => {
   if (error) {
     return (
       <View className="flex-1 bg-background">
-        <Navbar title="Orders" />
+        <Navbar title={l10n.getString('orders')} />
         <ErrorUI />
       </View>
     );
@@ -135,7 +148,7 @@ const OrdersScreen = () => {
 
   return (
     <View className="flex-1 bg-background p-safe">
-      <Navbar title="Orders" />
+      <Navbar title={l10n.getString('orders')} />
       <FlatList
         data={data.orders}
         renderItem={renderOrderItem}
@@ -150,7 +163,7 @@ const OrdersScreen = () => {
         }
         ListEmptyComponent={
           <Text className="text-center text-gray-500 mt-6">
-            No orders found
+            {l10n.getString('no-orders-found')}
           </Text>
         }
       />

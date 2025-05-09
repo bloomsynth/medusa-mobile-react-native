@@ -10,6 +10,7 @@ import Animated, {
   withSpring,
   withSequence,
 } from 'react-native-reanimated';
+import {useLocalization} from '@fluent/react';
 import {useColors} from '@styles/hooks';
 import {useCart} from '@data/cart-context';
 import {useProductQuantity} from '@data/hooks';
@@ -31,6 +32,7 @@ const AnimatedCartButton = ({
   inStock,
   hasSelectedAllOptions = false,
 }: AnimatedCartButtonProps) => {
+  const {l10n} = useLocalization();
   const {addToCart} = useCart();
   const [adding, setAdding] = React.useState(false);
   const productQuantityInCart = useProductQuantity(productId);
@@ -75,7 +77,9 @@ const AnimatedCartButton = ({
       <View className="flex-1">
         <Button
           title={
-            hasSelectedAllOptions && !inStock ? 'Out of stock' : 'Add to cart'
+            hasSelectedAllOptions && !inStock
+              ? l10n.getString('out-of-stock')
+              : l10n.getString('add-to-cart')
           }
           onPress={addToCartHandler}
           disabled={disabled}
@@ -87,6 +91,7 @@ const AnimatedCartButton = ({
 };
 
 const ViewCart = ({quantity}: {quantity: number}) => {
+  const {l10n} = useLocalization();
   const colors = useColors();
   const navigation = useNavigation();
   const scale = useSharedValue(1);
@@ -131,7 +136,7 @@ const ViewCart = ({quantity}: {quantity: number}) => {
           <Text
             className="ml-2 text-content font-content-bold"
             numberOfLines={1}>
-            View cart
+            {l10n.getString('view-cart')}
           </Text>
         </View>
       </View>
