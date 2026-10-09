@@ -1,4 +1,4 @@
-/* eslint-env jest */
+/* global jest */
 require('react-native-reanimated').setUpTests();
 
 jest.mock('@react-native-async-storage/async-storage', () =>
