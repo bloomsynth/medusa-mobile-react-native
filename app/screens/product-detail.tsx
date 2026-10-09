@@ -35,7 +35,7 @@ function ProductScreen({ route }: Props) {
     queryFn: () =>
       apiClient.store.product.retrieve(productId, {
         region_id: region?.id,
-        fields: '*variants.inventory_quantity',
+        fields: '+variants.inventory_quantity',
       }),
   });
 
