@@ -1,5 +1,9 @@
 # Medusa Mobile
 
+[![Tested with Medusa 2.21.2](https://img.shields.io/badge/Medusa-tested%20with%202.21.2-blue)](https://github.com/medusajs/medusa/releases/tag/v2.21.2)
+
+Tested with the Medusa **2.21.2** starter backend: Android launch, product display, catalog/cart APIs, and full checkout.
+
 ![Medusa Mobile](https://i.imgur.com/LKvNyGX.png)
 
 A modern e-commerce mobile application built with React Native and Medusa. Whether you're building a React Native starter Medusa project or a production app, this provides a complete shopping experience with features like product browsing, cart management, user authentication, and order tracking.
