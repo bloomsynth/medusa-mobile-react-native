@@ -36,6 +36,7 @@ const Checkout = () => {
   const { cart, updateCart, resetCart } = useCart();
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
+  const [isUpdatingShipping, setIsUpdatingShipping] = useState(false);
   const countries = useCountries();
   const currentStep = useCurrentCheckoutStep();
   const activeSession = useActivePaymentSession();
@@ -91,7 +92,9 @@ const Checkout = () => {
           />
         );
       case 'delivery':
-        return <ShippingStep cart={cart} />;
+        return (
+          <ShippingStep cart={cart} onUpdatingChange={setIsUpdatingShipping} />
+        );
       case 'payment':
         return (
           <PaymentStep
@@ -101,7 +104,12 @@ const Checkout = () => {
           />
         );
       case 'review':
-        return <ReviewStep cart={cart} />;
+        return (
+          <ReviewStep
+            cart={cart}
+            selectedProviderId={selectedPaymentProviderId}
+          />
+        );
       default:
         return null;
     }
@@ -145,6 +153,12 @@ const Checkout = () => {
   };
 
   const handleDeliverySubmit = () => {
+    if (
+      isUpdatingShipping ||
+      !cart.shipping_methods?.some(method => method.shipping_option_id)
+    ) {
+      throw new Error(l10n.getString('select-shipping-method'));
+    }
     setActiveStep('payment');
   };
 
@@ -279,6 +293,11 @@ const Checkout = () => {
           title={getCtaText()}
           onPress={handleContinue}
           loading={isLoading}
+          disabled={
+            activeStep === 'delivery' &&
+            (isUpdatingShipping ||
+              !cart.shipping_methods?.some(method => method.shipping_option_id))
+          }
         />
       </View>
     </View>

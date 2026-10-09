@@ -8,17 +8,21 @@ import { PAYMENT_PROVIDER_DETAILS_MAP } from '../../../types/checkout';
 
 type ReviewStepProps = {
   cart: HttpTypes.StoreCart;
+  selectedProviderId?: string;
 };
 
-const ReviewStep = ({ cart }: ReviewStepProps) => {
+const ReviewStep = ({ cart, selectedProviderId }: ReviewStepProps) => {
   const { l10n } = useLocalization();
   // Find the selected shipping option
   const selectedShippingMethod = cart.shipping_methods?.at(-1);
 
   const selectedPaymentMethodId =
+    selectedProviderId ||
     cart.payment_collection?.payment_sessions?.find(
-      (paymentSession: any) => paymentSession.status === 'pending',
-    )?.provider_id || '';
+      session =>
+        session.status === 'pending' || session.status === 'authorized',
+    )?.provider_id ||
+    '';
 
   return (
     <View>

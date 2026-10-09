@@ -11,9 +11,10 @@ import { useCart } from '@data/cart-context';
 
 type ShippingStepProps = {
   cart: HttpTypes.StoreCart;
+  onUpdatingChange: (updating: boolean) => void;
 };
 
-const ShippingStep = ({ cart }: ShippingStepProps) => {
+const ShippingStep = ({ cart, onUpdatingChange }: ShippingStepProps) => {
   const { l10n } = useLocalization();
   const colors = useColors();
   const [calculatedPricesMap, setCalculatedPricesMap] = useState<
@@ -99,6 +100,7 @@ const ShippingStep = ({ cart }: ShippingStepProps) => {
 
     setError(null);
     setUpdatingOptionId(id);
+    onUpdatingChange(true);
 
     try {
       await setShippingMethod(id);
@@ -108,6 +110,7 @@ const ShippingStep = ({ cart }: ShippingStepProps) => {
       console.error(err);
     } finally {
       setUpdatingOptionId(null);
+      onUpdatingChange(false);
     }
   };
 
@@ -143,7 +146,10 @@ const ShippingStep = ({ cart }: ShippingStepProps) => {
             <TouchableOpacity
               key={option.id}
               onPress={() => handleShippingMethodSelect(option.id)}
-              disabled={isUpdating || (isCalculated && isCalculatingPrices)}
+              disabled={
+                updatingOptionId !== null ||
+                (isCalculated && isCalculatingPrices)
+              }
               className={`p-4 border rounded-lg flex-row justify-between items-center ${
                 selectedMethodId === option.id
                   ? 'border-primary'
@@ -171,11 +177,11 @@ const ShippingStep = ({ cart }: ShippingStepProps) => {
                   {isCalculated && isCalculatingPrices
                     ? `${l10n.getString('calculating')}...`
                     : amount !== undefined
-                    ? convertToLocale({
-                        amount,
-                        currency_code: cart.currency_code,
-                      })
-                    : '-'}
+                      ? convertToLocale({
+                          amount,
+                          currency_code: cart.currency_code,
+                        })
+                      : '-'}
                 </Text>
               )}
             </TouchableOpacity>
