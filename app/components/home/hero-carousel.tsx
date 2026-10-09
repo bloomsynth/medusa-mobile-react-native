@@ -1,10 +1,11 @@
 import { formatImageUrl } from '@utils/image-url';
 import { cssInterop } from 'nativewind';
 import React from 'react';
-import { Dimensions, Image, View } from 'react-native';
+import { Dimensions, Image, StyleSheet, View } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
-import Carousel, {
-  ICarouselInstance,
+import {
+  Carousel,
+  CarouselRef,
   Pagination,
 } from 'react-native-reanimated-carousel';
 import { useQuery } from '@tanstack/react-query';
@@ -19,14 +20,14 @@ type HeroCarouselItem = {
   imageUrl: string;
 };
 
-const PagiationTw = cssInterop(Pagination.Basic, {
+const PagiationTw = cssInterop(Pagination, {
   containerClassName: 'containerStyle',
   dotClassName: 'dotStyle',
   activeDotClassName: 'activeDotStyle',
 });
 
 const HeroCarousel = () => {
-  const ref = React.useRef<ICarouselInstance>(null);
+  const ref = React.useRef<CarouselRef>(null);
   const progress = useSharedValue<number>(0);
   const navigation = useNavigation();
   const enableNavigation = false;
@@ -47,7 +48,7 @@ const HeroCarousel = () => {
 
   const onPressPagination = (index: number) => {
     ref.current?.scrollTo({
-      count: index - progress.value,
+      index,
       animated: true,
     });
   };
@@ -72,17 +73,16 @@ const HeroCarousel = () => {
     <View className="items-center gap-2 mb-4">
       <Carousel
         ref={ref}
-        width={width}
-        height={115}
+        style={styles.carousel}
         data={data}
         loop={true}
-        autoPlay={true}
-        autoPlayInterval={4000}
-        onProgressChange={progress}
-        mode="parallax"
-        modeConfig={{
-          parallaxScrollingScale: 0.92,
-          parallaxScrollingOffset: 0,
+        autoplay={true}
+        autoplayInterval={4000}
+        progress={progress}
+        layout={{
+          type: 'parallax',
+          scale: 0.92,
+          offset: 0,
         }}
         renderItem={({ index }) => {
           const uri = formatImageUrl(data[index].imageUrl);
@@ -100,12 +100,12 @@ const HeroCarousel = () => {
       {data.length > 1 && (
         <PagiationTw
           progress={progress}
-          data={data}
+          count={data.length}
           onPress={onPressPagination}
           dotClassName="bg-gray-400 rounded-full"
           activeDotClassName="bg-content"
           containerClassName="gap-3"
-          size={8}
+          dotStyle={styles.paginationDot}
         />
       )}
     </View>
@@ -113,3 +113,8 @@ const HeroCarousel = () => {
 };
 
 export default HeroCarousel;
+
+const styles = StyleSheet.create({
+  carousel: { width, height: 115 },
+  paginationDot: { width: 8, height: 8 },
+});

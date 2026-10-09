@@ -2,10 +2,11 @@ import { HttpTypes } from '@medusajs/types';
 import { formatImageUrl } from '@utils/image-url';
 import { cssInterop } from 'nativewind';
 import React from 'react';
-import { Dimensions, Image, View } from 'react-native';
+import { Dimensions, Image, StyleSheet, View } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
-import Carousel, {
-  ICarouselInstance,
+import {
+  Carousel,
+  CarouselRef,
   Pagination,
 } from 'react-native-reanimated-carousel';
 
@@ -16,22 +17,18 @@ type CarouselProps = {
   data: HttpTypes.StoreProductImage[];
 };
 
-const PagiationTw = cssInterop(Pagination.Basic, {
+const PagiationTw = cssInterop(Pagination, {
   containerClassName: 'containerStyle',
   dotClassName: 'dotStyle',
   activeDotClassName: 'activeDotStyle',
 });
 
 const ImageCarousel = ({ data }: CarouselProps) => {
-  const ref = React.useRef<ICarouselInstance>(null);
+  const ref = React.useRef<CarouselRef>(null);
   const progress = useSharedValue<number>(0);
   const onPressPagination = (index: number) => {
     ref.current?.scrollTo({
-      /**
-       * Calculate the difference between the current index and the target index
-       * to ensure that the carousel scrolls to the nearest index
-       */
-      count: index - progress.value,
+      index,
       animated: true,
     });
   };
@@ -40,11 +37,10 @@ const ImageCarousel = ({ data }: CarouselProps) => {
     <View className="bg-background-secondary">
       <Carousel
         ref={ref}
-        width={width}
-        height={height * 0.4}
+        style={{ width, height: height * 0.4 }}
         data={data}
         loop={false}
-        onProgressChange={progress}
+        progress={progress}
         renderItem={({ index }) => {
           const uri = formatImageUrl(data[index].url);
           return (
@@ -60,12 +56,12 @@ const ImageCarousel = ({ data }: CarouselProps) => {
         <View className="absolute left-0 right-0 bottom-8">
           <PagiationTw
             progress={progress}
-            data={data}
+            count={data.length}
             onPress={onPressPagination}
             dotClassName="bg-gray-200 rounded-full"
             activeDotClassName="bg-gray-600"
-            containerClassName="gap-2"
-            size={8}
+            containerClassName="gap-2 justify-center"
+            dotStyle={styles.paginationDot}
           />
         </View>
       )}
@@ -74,3 +70,7 @@ const ImageCarousel = ({ data }: CarouselProps) => {
 };
 
 export default ImageCarousel;
+
+const styles = StyleSheet.create({
+  paginationDot: { width: 8, height: 8 },
+});

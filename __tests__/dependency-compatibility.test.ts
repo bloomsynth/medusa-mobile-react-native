@@ -1,4 +1,5 @@
 import 'react-native-url-polyfill/auto';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { checkoutSchema, createEmptyAddress } from '../app/types/checkout';
 
@@ -59,4 +60,13 @@ test('checkout resolver preserves valid input', async () => {
   );
   expect(result.errors).toEqual({});
   expect(result.values).toEqual(input);
+});
+
+test('legacy storage supports persisted cart and auth token APIs', async () => {
+  const key = 'dependency-compatibility-test';
+  expect(await AsyncStorage.getItem(key)).toBeNull();
+  await AsyncStorage.setItem(key, 'cart_test');
+  expect(await AsyncStorage.getItem(key)).toBe('cart_test');
+  await AsyncStorage.removeItem(key);
+  expect(await AsyncStorage.getItem(key)).toBeNull();
 });
