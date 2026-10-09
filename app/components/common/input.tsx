@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
-import { TextInput, TextInputProps, View } from 'react-native';
+import {
+  TextInput,
+  TextInputInstance,
+  TextInputProps,
+  View,
+} from 'react-native';
 import Text from './text';
 
 type InputProps = TextInputProps & {
@@ -9,7 +14,7 @@ type InputProps = TextInputProps & {
   containerClassName?: string;
 };
 
-const Input = React.forwardRef<TextInput, InputProps>(
+const Input = React.forwardRef<TextInputInstance, InputProps>(
   (
     {
       label,

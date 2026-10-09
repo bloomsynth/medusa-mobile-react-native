@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StatusBar, TouchableOpacity } from 'react-native';
 import Icon from '@react-native-vector-icons/ant-design';
-import { useColors, useTheme } from '@styles/hooks';
+import { useTheme } from '@styles/hooks';
 import Header from '@components/home/header';
 import ProductsList from '@components/product/product-list';
 import HeroCarousel from '@components/home/hero-carousel';
@@ -15,14 +15,10 @@ const Home = () => {
       themeNames[(themeNames.indexOf(name) + 1) % themeNames.length];
     setThemeName(nextTheme);
   };
-  const colors = useColors();
   const { isDarkMode } = useTheme();
   return (
     <View className="flex-1 bg-background p-safe">
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={colors.background}
-      />
+      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <Header />
       <View className="flex-1 mt-4">
         <ProductsList

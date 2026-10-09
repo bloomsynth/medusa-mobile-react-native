@@ -14,11 +14,7 @@ const Splash = () => {
   }, [navigation]);
   return (
     <>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        translucent={true}
-        backgroundColor="transparent"
-      />
+      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <View className="flex-1 justify-center items-center bg-primary">
         <Text
           type="display"

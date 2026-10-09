@@ -137,10 +137,14 @@ const ProductsList = ({
         <RefreshControl
           colors={[colors.primary]}
           refreshing={isRefetching}
-          onRefresh={refetch}
+          onRefresh={async () => {
+            await refetch();
+          }}
         />
       }
-      onRefresh={refetch}
+      onRefresh={async () => {
+        await refetch();
+      }}
     />
   );
 };

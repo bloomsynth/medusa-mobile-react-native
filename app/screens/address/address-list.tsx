@@ -117,7 +117,9 @@ const AddressList = () => {
           refreshControl={
             <RefreshControl
               refreshing={isRefetching}
-              onRefresh={refetch}
+              onRefresh={async () => {
+                await refetch();
+              }}
               colors={[colors.primary]}
             />
           }

@@ -1,44 +1,19 @@
 {
   "extends": "@react-native/typescript-config",
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "nativewind-env.d.ts"
-  ],
-  "exclude": [
-    "**/node_modules",
-    "**/Pods"
-  ],
+  "include": ["**/*.ts", "**/*.tsx", "nativewind-env.d.ts"],
+  "exclude": ["**/node_modules", "**/Pods"],
   "compilerOptions": {
-    "baseUrl": ".",
     "paths": {
-      "@styles/*": [
-        "app/styles/*"
-      ],
-      "@images/*": [
-        "app/images/*"
-      ],
-      "@screens/*": [
-        "app/screens/*"
-      ],
-      "@components/*": [
-        "app/components/*"
-      ],
-      "@constants/*": [
-        "app/constants/*"
-      ],
-      "@api/*": [
-        "app/api/*"
-      ],
-      "@utils/*": [
-        "app/utils/*"
-      ],
-      "@data/*": [
-        "app/data/*"
-      ],
-      "@types/*": [
-        "app/types/*"
-      ]
+      "@styles/*": ["./app/styles/*"],
+      "@images/*": ["./app/images/*"],
+      "@screens/*": ["./app/screens/*"],
+      "@components/*": ["./app/components/*"],
+      "@constants/*": ["./app/constants/*"],
+      "@api/*": ["./app/api/*"],
+      "@utils/*": ["./app/utils/*"],
+      "@data/*": ["./app/data/*"],
+      "@types/*": ["./app/types/*"],
+      "types/*": ["./types/*"]
     }
   }
 }

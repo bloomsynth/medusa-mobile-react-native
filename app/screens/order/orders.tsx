@@ -36,9 +36,10 @@ const OrdersScreen = () => {
 
   const { isPending, error, data, refetch, isRefetching } = useQuery({
     queryKey: ['orders'],
-    queryFn: () => apiClient.store.order.list({
-      order: '-created_at',
-    }),
+    queryFn: () =>
+      apiClient.store.order.list({
+        order: '-created_at',
+      }),
     enabled: !!customer,
   });
 
@@ -162,7 +163,9 @@ const OrdersScreen = () => {
           <RefreshControl
             colors={[colors.primary]}
             refreshing={isRefetching}
-            onRefresh={refetch}
+            onRefresh={async () => {
+              await refetch();
+            }}
           />
         }
         ListEmptyComponent={
