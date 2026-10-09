@@ -2,7 +2,7 @@ import Button from '@components/common/button';
 import Text from '@components/common/text';
 import React, { useEffect, useRef } from 'react';
 import Icon from '@react-native-vector-icons/ant-design';
-import { View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -16,6 +16,8 @@ import { useCart } from '@data/cart-context';
 import { useProductQuantity } from '@data/hooks';
 import { useNavigation } from '@react-navigation/native';
 import Badge from '@components/common/badge';
+
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 type AnimatedCartButtonProps = {
   productId: string;
@@ -36,30 +38,18 @@ const AnimatedCartButton = ({
   const { addToCart } = useCart();
   const [adding, setAdding] = React.useState(false);
   const productQuantityInCart = useProductQuantity(productId);
-  const showViewCart = useSharedValue(productQuantityInCart > 0);
-  const viewCartWidth = 192;
+  const visible = productQuantityInCart > 0;
+  const reveal = useSharedValue(visible ? 1 : 0);
 
   useEffect(() => {
-    if (productQuantityInCart > 0) {
-      showViewCart.value = true;
-    } else {
-      showViewCart.value = false;
-    }
-  }, [productQuantityInCart, showViewCart]);
+    reveal.value = withTiming(visible ? 1 : 0, { duration: 300 });
+  }, [visible, reveal]);
 
-  const rowStyles = useAnimatedStyle(() => {
-    return {
-      gap: withTiming(showViewCart.value ? 8 : 0),
-    };
-  });
-
-  const viewCartStyles = useAnimatedStyle(() => {
-    return {
-      width: withTiming(showViewCart.value ? viewCartWidth : 0),
-      opacity: withTiming(showViewCart.value ? 1 : 0),
-    };
-  });
-
+  const revealStyle = useAnimatedStyle(() => ({
+    width: 192 * reveal.value,
+    marginRight: 8 * reveal.value,
+    opacity: reveal.value,
+  }));
   const addToCartHandler = async () => {
     if (!selectedVariantId || disabled || !inStock) {
       return;
@@ -70,9 +60,11 @@ const AnimatedCartButton = ({
   };
 
   return (
-    <Animated.View className="p-4 flex-row" style={[rowStyles]}>
-      <Animated.View style={[viewCartStyles]}>
-        <ViewCart quantity={productQuantityInCart} />
+    <View className="p-4 flex-row">
+      <Animated.View style={[styles.reveal, revealStyle]}>
+        <View style={styles.viewCart}>
+          <ViewCart quantity={productQuantityInCart} />
+        </View>
       </Animated.View>
       <View className="flex-1">
         <Button
@@ -86,7 +78,7 @@ const AnimatedCartButton = ({
           loading={adding}
         />
       </View>
-    </Animated.View>
+    </View>
   );
 };
 
@@ -95,6 +87,15 @@ const ViewCart = ({ quantity }: { quantity: number }) => {
   const colors = useColors();
   const navigation = useNavigation();
   const scale = useSharedValue(1);
+  const opacity = useSharedValue(0);
+
+  useEffect(() => {
+    opacity.value = withTiming(1, { duration: 300 });
+  }, [opacity]);
+
+  const opacityStyle = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+  }));
   const prevQuantity = useRef(quantity);
 
   useEffect(() => {
@@ -119,12 +120,24 @@ const ViewCart = ({ quantity }: { quantity: number }) => {
   };
 
   return (
-    <Button
-      variant="secondary"
+    <AnimatedPressable
+      accessibilityRole="button"
+      accessibilityLabel={l10n.getString('view-cart')}
       disabled={quantity === 0}
       onPress={navigateToCart}
+      onPressIn={() => {
+        opacity.value = withTiming(0.2, { duration: 150 });
+      }}
+      onPressOut={() => {
+        opacity.value = withTiming(1, { duration: 250 });
+      }}
+      style={[
+        styles.cartButton,
+        { backgroundColor: colors.background },
+        opacityStyle,
+      ]}
     >
-      <View>
+      <View pointerEvents="none">
         <View className="flex-row gap-1 items-center">
           <View>
             <Icon name="shopping-cart" size={18} color={colors.content} />
@@ -143,8 +156,22 @@ const ViewCart = ({ quantity }: { quantity: number }) => {
           </Text>
         </View>
       </View>
-    </Button>
+    </AnimatedPressable>
   );
 };
 
 export default AnimatedCartButton;
+
+const styles = StyleSheet.create({
+  reveal: { overflow: 'hidden' },
+  viewCart: { width: 192 },
+  cartButton: {
+    height: 56,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#d1d5db',
+  },
+});
