@@ -109,7 +109,7 @@ const FabButton = ({ actions, mainIcon = 'plus' }: FabButtonProps) => {
           style={mainButtonStyle}
           className="bg-primary p-4 self-center rounded-full justify-center items-center elevation-md"
         >
-          <Icon name={mainIcon} size={24} color={colors.contentInverse} />
+          <Icon name={mainIcon} size={24} color={colors.contentSecondary} />
         </Animated.View>
       </Pressable>
     </Animated.View>
