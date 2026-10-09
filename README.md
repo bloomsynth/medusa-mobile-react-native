@@ -2,7 +2,7 @@
 
 [![Tested with Medusa 2.21.2](https://img.shields.io/badge/Medusa-tested%20with%202.21.2-blue)](https://github.com/medusajs/medusa/releases/tag/v2.21.2)
 
-Tested with the Medusa **2.21.2** starter backend: Android launch, product display, catalog/cart APIs, and full checkout.
+Tested with the Medusa **2.21.2** starter backend.
 
 ![Medusa Mobile](https://i.imgur.com/LKvNyGX.png)
 
