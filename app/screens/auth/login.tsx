@@ -12,7 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
 const signInSchema = z.object({
-  email: z.string().email('invalid-email-address'),
+  email: z.email({ error: 'invalid-email-address' }),
   password: z.string().min(3, 'password-must-be-at-least-n-characters'),
 });
 

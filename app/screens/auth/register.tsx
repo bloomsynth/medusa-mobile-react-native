@@ -14,7 +14,7 @@ import * as z from 'zod';
 const registerSchema = z.object({
   firstName: z.string().min(1, 'first-name-is-required'),
   lastName: z.string().min(1, 'last-name-is-required'),
-  email: z.string().email('invalid-email-address'),
+  email: z.email({ error: 'invalid-email-address' }),
   password: z.string().min(6, 'password-must-be-at-least-n-characters'),
 });
 

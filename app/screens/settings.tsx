@@ -11,7 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
 const settingSchema = z.object({
-  language: z.enum(['en-US', 'id-ID'], { message: 'language-is-required' }),
+  language: z.enum(['en-US', 'id-ID'], { error: 'language-is-required' }),
 });
 
 type ProfileFormData = z.infer<typeof settingSchema>;

@@ -13,7 +13,7 @@
     "@fluent/bundle": "^0.19.1",
     "@fluent/langneg": "^0.7.0",
     "@fluent/react": "^0.15.2",
-    "@hookform/resolvers": "^3.10.0",
+    "@hookform/resolvers": "^5.9.1",
     "@medusajs/js-sdk": "^2.11.0",
     "@medusajs/types": "^2.11.0",
     "@react-native-async-storage/async-storage": "^2.2.0",
@@ -28,7 +28,7 @@
     "dayjs": "^1.11.13",
     "nativewind": "^4.2.7",
     "react": "19.2.3",
-    "react-hook-form": "^7.6.0",
+    "react-hook-form": "^7.89.0",
     "react-native": "0.87.1",
     "react-native-element-dropdown": "^2.12.4",
     "react-native-gesture-handler": "^2.33.0",
@@ -41,10 +41,11 @@
     "tailwind-merge": "^3.3.1",
     "tailwind-variants": "^3.1.1",
     "tailwindcss": "^3.4.17",
-    "zod": "^3.25.76"
+    "zod": "^4.6.5"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@babel/plugin-transform-export-namespace-from": "^7.29.7",
     "@babel/preset-env": "^7.25.3",
     "@babel/runtime": "^7.25.0",
     "@eslint/compat": "^1.4.1",

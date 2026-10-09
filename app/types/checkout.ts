@@ -43,7 +43,7 @@ export const createEmptyAddress = (): AddressFields =>
   ) as AddressFields;
 
 export const checkoutSchema = z.object({
-  email: z.string().email('please-enter-a-valid-email'),
+  email: z.email({ error: 'please-enter-a-valid-email' }),
   shipping_address: addressSchema,
   billing_address: addressSchema,
   use_same_billing: z.boolean(),
