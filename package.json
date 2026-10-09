@@ -7,7 +7,10 @@
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "typecheck": "tsc --noEmit",
+    "test:ci": "jest --runInBand --watchman=false",
+    "verify": "npm run lint && npm run typecheck && npm run test:ci"
   },
   "dependencies": {
     "@fluent/bundle": "^0.19.1",

@@ -57,7 +57,7 @@ cd medusa-mobile
 
 2. Install dependencies:
 ```bash
-npm install
+npm ci
 ```
 
 3. Configure environment variables:
@@ -66,7 +66,7 @@ cp .env.template .env
 ```
 Edit `.env` with your Medusa backend URL and publishable API key.
 
-NOTE: Update the `MEDUSA_BACKEND_URL` in your `.env` file. If you set the URL as localhost, then the Android emulator will not be able to connect to the server. Use your local IP address instead. example: `http://192.168.1.100:9000` Run `ipconfig` to get your local IP address.
+For the Android Studio emulator, use `http://10.0.2.2:9000` (the template default). Use `http://localhost:9000` for the iOS simulator or your computer’s LAN IP for a physical device. The publishable key must be linked to the sales channel containing your products. See the [development guide](docs/development.md) for backend setup and troubleshooting.
 
 ### Step 2: Start Metro Server
 
@@ -84,7 +84,10 @@ npm run android
 For iOS:
 Install dependencies for iOS:
 ```bash
-npx pod-install ios
+bundle install
+cd ios
+bundle exec pod install
+cd ..
 ```
 
 Run the application:
@@ -109,6 +112,21 @@ app/
 ├── utils/         # Helper functions
 └── api/           # API client configuration
 ```
+
+## Development and AI agents
+
+Start with [AGENTS.md](AGENTS.md) for repository instructions, the
+[development guide](docs/development.md) for setup and validation, and the
+[architecture guide](docs/architecture.md) for state flow and dependency constraints.
+Use Node from `.nvmrc` and the npm version recorded in `package.json`.
+
+```sh
+npm run verify
+```
+
+This runs lint, TypeScript, and unit tests. GitHub Actions runs the same checks on
+pull requests and pushes to `main`. Native builds and live backend checks are
+covered separately in the development guide.
 
 ## 📍 Roadmap
 
