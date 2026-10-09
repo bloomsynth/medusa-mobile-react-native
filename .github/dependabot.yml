@@ -3,8 +3,19 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+    groups:
+      actions:
+        patterns:
+          - "*"
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+    # Minor and patch updates arrive as one PR; major updates stay separate
+    # so breaking changes can be reviewed on their own.
+    groups:
+      npm-minor-patch:
+        update-types:
+          - "minor"
+          - "patch"
