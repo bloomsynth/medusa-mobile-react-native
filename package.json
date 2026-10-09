@@ -63,7 +63,7 @@
     "@types/react-test-renderer": "^19.3.0",
     "babel-jest": "^30.5.2",
     "babel-plugin-module-resolver": "^5.0.3",
-    "eslint": "^9.39.5",
+    "eslint": "^10.12.0",
     "jest": "^30.5.2",
     "prettier": "^3.9.9",
     "react-native-dotenv": "^5.0.0",
