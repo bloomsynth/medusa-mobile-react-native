@@ -71,7 +71,7 @@
     "prettier": "^3.9.9",
     "react-native-dotenv": "^5.0.0",
     "react-test-renderer": "19.2.3",
-    "typescript": "^6.0.3"
+    "typescript": "^7.0.2"
   },
   "engines": {
     "node": "^22.13.0 || ^24.3.0 || >=26.0.0"
