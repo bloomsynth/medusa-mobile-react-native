@@ -28,6 +28,7 @@ then restores or creates the region's cart and updates it on region changes.
 `CustomerProvider` links the cart on login and resets it on logout. The SDK stores
 the JWT using AsyncStorage. Persisted IDs can outlive a backend database reset;
 check this before treating stale cart/region data as an API regression.
+[App hooks](app-hooks.md) documents the hooks these providers expose.
 
 Product detail requests `+variants.inventory_quantity`. This computed Medusa
 field must be explicitly included for stock checks. Check `manage_inventory`,

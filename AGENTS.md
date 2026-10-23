@@ -8,6 +8,7 @@ Medusa version. `package.json` and `package-lock.json` record dependency version
 
 - [Development setup and validation](docs/development.md)
 - [Architecture and dependency constraints](docs/architecture.md)
+- [App hooks for cart, region, customer, and theme](docs/app-hooks.md)
 - [Human-facing project guide](README.md)
 
 Use Node from `.nvmrc` and the npm version in `package.json#packageManager`.
