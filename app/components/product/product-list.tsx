@@ -37,6 +37,7 @@ type ProductsListProps = {
   headerComponent?: React.ReactElement;
   name?: string;
   hideTitle?: boolean;
+  emptyComponent?: React.ReactElement;
 };
 
 const ProductsList = ({
@@ -45,6 +46,7 @@ const ProductsList = ({
   headerComponent,
   name,
   hideTitle = false,
+  emptyComponent,
 }: ProductsListProps) => {
   const { l10n } = useLocalization();
   const colors = useColors();
@@ -127,6 +129,7 @@ const ProductsList = ({
       data={products}
       numColumns={2}
       ListHeaderComponent={renderHeader}
+      ListEmptyComponent={emptyComponent}
       renderItem={({ item }) => <ProductItem product={item} />}
       keyExtractor={item => item.id ?? ''}
       onEndReached={loadMore}

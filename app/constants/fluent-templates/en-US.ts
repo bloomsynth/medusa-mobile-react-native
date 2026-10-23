@@ -162,6 +162,10 @@ const en_US: FluentTemplate = {
   'creating-account': 'Creating account',
   'already-have-an-account': 'Already have an account? Sign In',
   'registration-failed': 'Registration failed. Please try again.',
+  search: 'Search',
+  'search-products': 'Search products',
+  'search-prompt': 'Type a product name to start searching',
+  'no-products-found-for': 'No products found for "{ $query }"',
 };
 
 export default Object.keys(en_US)
