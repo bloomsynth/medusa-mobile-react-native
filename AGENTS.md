@@ -64,3 +64,10 @@ updated lockfile with the manifest. Update these docs when the workflow changes.
 When handing back work, state what changed, the checks performed and their
 results, and any remaining limitations. Distinguish automated tests, native
 builds, and manual checks. Commit or publish when requested by the user.
+
+Write commit messages and PR titles as
+[Conventional Commits](https://www.conventionalcommits.org/), as
+[CONTRIBUTING.md](CONTRIBUTING.md) asks: `type(optional-scope): summary`, for
+example `feat(search): add product search screen` or `fix(cart): keep totals in
+sync`. Use `feat`, `fix`, `docs`, `test`, `refactor`, `chore`, `build`, or `ci`,
+and mark breaking changes with `!` or a `BREAKING CHANGE:` footer.
