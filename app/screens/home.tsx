@@ -3,6 +3,7 @@ import { View, StatusBar, TouchableOpacity } from 'react-native';
 import Icon from '@react-native-vector-icons/ant-design';
 import { useTheme } from '@styles/hooks';
 import Header from '@components/home/header';
+import SearchBar from '@components/home/search-bar';
 import ProductsList from '@components/product/product-list';
 import HeroCarousel from '@components/home/hero-carousel';
 import FeaturedCollection from '@components/home/featured-collection';
@@ -20,6 +21,7 @@ const Home = () => {
     <View className="flex-1 bg-background p-safe">
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <Header />
+      <SearchBar />
       <View className="flex-1 mt-4">
         <ProductsList
           headerComponent={

@@ -32,6 +32,7 @@ import AddressForm from '@screens/address/address-form';
 import AddressList from '@screens/address/address-list';
 import RegionSelect from '@screens/region-select';
 import Settings from '@screens/settings';
+import Search from '@screens/search';
 
 import '@styles/global.css';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -118,6 +119,7 @@ const RootStack = createNativeStackNavigator({
         AddressList,
         AddressForm,
         Settings,
+        Search,
       },
     },
     Modal: {

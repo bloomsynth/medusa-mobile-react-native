@@ -154,4 +154,8 @@ export interface FluentTemplate {
   'creating-account': string;
   'already-have-an-account': string;
   'registration-failed': string;
+  search: string;
+  'search-products': string;
+  'search-prompt': string;
+  'no-products-found-for': string;
 }

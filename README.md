@@ -139,7 +139,7 @@ Here are the planned features and improvements:
 - [x] 🌐 Localization support
 - [ ] 💳 Stripe integration for secure payments
 - [ ] 🔄 Related products suggestions
-- [ ] 🔍 Product search functionality
+- [x] 🔍 Product search functionality
 - [ ] 📦 cli-tool to generate a new project from this template
 - [ ] 🎨 Advanced customization options
 - [ ] 🔌 Plugins to extend the functionality of the app

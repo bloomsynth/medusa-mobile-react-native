@@ -162,6 +162,10 @@ const id_ID: FluentTemplate = {
   'creating-account': 'Sedang membuat akun',
   'already-have-an-account': 'Sudah memiliki akun? Masuk',
   'registration-failed': 'Pendaftaran gagal. Silakan coba lagi.',
+  search: 'Cari',
+  'search-products': 'Cari produk',
+  'search-prompt': 'Ketik nama produk untuk mulai mencari',
+  'no-products-found-for': 'Tidak ada produk yang ditemukan untuk "{ $query }"',
 };
 
 export default Object.keys(id_ID)

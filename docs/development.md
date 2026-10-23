@@ -149,6 +149,8 @@ you exercised, and which checks remain unverified.
 
 - Catalog: load products and region-specific prices, select a variant, and confirm
   stocked variants can be added while unavailable variants are blocked.
+- Search: open search from Home, type a term, and confirm results update after
+  typing pauses, use region prices, paginate, and show the empty state for no match.
 - Cart controls: tap the center and padding of View Cart after the reveal, repeat
   after adding/removing items, and check width, opacity, and badge animations.
 - Cart data: add, update, and remove items; confirm totals and persisted state.
