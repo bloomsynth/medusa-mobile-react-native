@@ -1,16 +1,56 @@
+<div align="center">
+
 # Medusa Mobile
 
+**The open-source React Native storefront for Medusa v2.**<br />
+Browsing, search, cart, checkout, accounts, and themes are ready on day one, so you can ship your store's iOS and Android app faster.
+
+[![GitHub stars](https://img.shields.io/github/stars/bloomsynth/medusa-mobile-react-native?style=flat&logo=github)](https://github.com/bloomsynth/medusa-mobile-react-native/stargazers)
+[![Verify](https://github.com/bloomsynth/medusa-mobile-react-native/actions/workflows/verify.yml/badge.svg)](https://github.com/bloomsynth/medusa-mobile-react-native/actions/workflows/verify.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Tested with Medusa 2.21.2](https://img.shields.io/badge/Medusa-tested%20with%202.21.2-blue)](https://github.com/medusajs/medusa/releases/tag/v2.21.2)
+[![Platforms](https://img.shields.io/badge/platforms-iOS%20%7C%20Android-lightgrey)](#-getting-started-with-react-native-medusa)
+[![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6?logo=typescript&logoColor=white)](tsconfig.json)
+[![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)](CONTRIBUTING.md)
 
-![Medusa Mobile](https://i.imgur.com/LKvNyGX.png)
+[Quick start](#-quick-start) · [Features](#-features) · [Themes](#-themes) · [Roadmap](#-roadmap) · [Contributing](CONTRIBUTING.md)
 
-A modern e-commerce mobile application built with React Native and Medusa. Whether you're building a React Native starter Medusa project or a production app, this provides a complete shopping experience with features like product browsing, cart management, user authentication, and order tracking.
+<!--
+  Demo GIF slot: record browse → search → add to cart → checkout → theme switch
+  (about 10–15 s, ~360 px wide), save it as docs/media/demo.gif, and replace the
+  image below with:
+  <img src="docs/media/demo.gif" alt="Medusa Mobile demo" width="360" />
+-->
+<img src="https://i.imgur.com/LKvNyGX.png" alt="Medusa Mobile screens" />
 
-Tested with the Medusa **2.21.2** starter backend.
+⭐ **If Medusa Mobile saves you time, please star the repo.** It helps other Medusa developers find it.
+
+</div>
+
+## 💡 Why Medusa Mobile?
+
+- **Complete shopping flow.** Product listing, search, cart, promo codes, guest checkout, accounts, and order history all work against a real Medusa v2 backend.
+- **Pinned to Medusa.** Tested with the Medusa **2.21.2** starter backend using the official JS SDK.
+- **Easy to brand.** It ships with several themes and dark mode, built on NativeWind (Tailwind) tokens you can replace.
+- **Ready for real stores.** It supports multiple regions, Fluent localization, strict TypeScript, CI, and unit tests.
+- **Plain React Native CLI.** There are no proprietary services, it is MIT licensed, and you can [add Expo](#-expo-usage) if you prefer it.
+
+## ⚡ Quick start
+
+You need a running [Medusa v2 backend](https://docs.medusajs.com/learn/installation) and a [React Native environment](https://reactnative.dev/docs/set-up-your-environment).
+
+```bash
+git clone https://github.com/bloomsynth/medusa-mobile-react-native.git medusa-mobile
+cd medusa-mobile && npm ci && cp .env.template .env   # then set your backend URL and publishable key
+npm start   # in another terminal: npm run android or npm run ios
+```
+
+For iOS pods, emulator networking, and troubleshooting, see [full setup](#-getting-started-with-react-native-medusa).
 
 ## ✨ Features
 
 - 🛍️ Product browsing with infinite scroll
+- 🔎 Product search
 - 👤 User authentication and profile management
 - 🔍 Categories and collections
 - 🛒 Cart management
@@ -152,4 +192,12 @@ theme hooks, with usage examples.
 ## 🛡️ License
 
 This project is licensed under the MIT License.
+
+---
+
+<div align="center">
+
+If you use Medusa Mobile, [⭐ star it on GitHub](https://github.com/bloomsynth/medusa-mobile-react-native/stargazers) and [share what you built](https://github.com/bloomsynth/medusa-mobile-react-native/discussions).
+
+</div>
 
