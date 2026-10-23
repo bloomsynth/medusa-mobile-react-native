@@ -15,6 +15,8 @@ Browsing, search, cart, checkout, accounts, and themes are ready on day one, so 
 
 [Quick start](#-quick-start) · [Features](#-features) · [Themes](#-themes) · [Roadmap](#-roadmap) · [Contributing](CONTRIBUTING.md)
 
+⭐ **If Medusa Mobile saves you time, please star the repo.** It helps other Medusa developers find it.
+
 <!--
   Demo GIF slot: record browse → search → add to cart → checkout → theme switch
   (about 10–15 s, ~360 px wide), save it as docs/media/demo.gif, and replace the
@@ -22,8 +24,6 @@ Browsing, search, cart, checkout, accounts, and themes are ready on day one, so 
   <img src="docs/media/demo.gif" alt="Medusa Mobile demo" width="360" />
 -->
 <img src="https://i.imgur.com/LKvNyGX.png" alt="Medusa Mobile screens" />
-
-⭐ **If Medusa Mobile saves you time, please star the repo.** It helps other Medusa developers find it.
 
 </div>
 
