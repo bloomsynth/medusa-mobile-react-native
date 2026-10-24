@@ -151,6 +151,9 @@ you exercised, and which checks remain unverified.
   stocked variants can be added while unavailable variants are blocked.
 - Search: open search from Home, type a term, and confirm results update after
   typing pauses, use region prices, paginate, and show the empty state for no match.
+- Related products: open a product in a collection and confirm "You May Also Like"
+  lists other products from it (not the current one) with region prices; check a
+  category-only product, and that the section is hidden when nothing else matches.
 - Cart controls: tap the center and padding of View Cart after the reveal, repeat
   after adding/removing items, and check width, opacity, and badge animations.
 - Cart data: add, update, and remove items; confirm totals and persisted state.

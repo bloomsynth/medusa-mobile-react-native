@@ -165,6 +165,7 @@ const en_US: FluentTemplate = {
   search: 'Search',
   'search-products': 'Search products',
   'search-prompt': 'Type a product name to start searching',
+  'related-products': 'You May Also Like',
   'no-products-found-for': 'No products found for "{ $query }"',
 };
 

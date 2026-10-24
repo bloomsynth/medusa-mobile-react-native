@@ -22,6 +22,7 @@ import { useColors } from '@styles/hooks';
 import RoundedButton from '@components/common/rounded-button';
 import { useRegion } from '@data/region-context';
 import WishlistButton from '@components/product/wishlist-button';
+import RelatedProducts from '@components/product/related-products';
 
 type Props = StaticScreenProps<{
   productId: string;
@@ -35,7 +36,7 @@ function ProductScreen({ route }: Props) {
     queryFn: () =>
       apiClient.store.product.retrieve(productId, {
         region_id: region?.id,
-        fields: '+variants.inventory_quantity',
+        fields: '+variants.inventory_quantity,*categories',
       }),
   });
 
@@ -170,6 +171,9 @@ const ProductContent = ({ product }: { product: HttpTypes.StoreProduct }) => {
             <Card>
               <Features />
             </Card>
+          </View>
+          <View className="mt-6">
+            <RelatedProducts product={product} />
           </View>
         </View>
       </ScrollView>

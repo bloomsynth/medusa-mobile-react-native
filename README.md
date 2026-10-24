@@ -178,7 +178,7 @@ Here are the planned features and improvements:
 - [x] 📖 Developer Guide
 - [x] 🌐 Localization support
 - [ ] 💳 Stripe integration for secure payments
-- [ ] 🔄 Related products suggestions
+- [x] 🔄 Related products suggestions
 - [x] 🔍 Product search functionality
 - [ ] 📦 cli-tool to generate a new project from this template
 - [ ] 🎨 Advanced customization options
