@@ -165,6 +165,7 @@ const id_ID: FluentTemplate = {
   search: 'Cari',
   'search-products': 'Cari produk',
   'search-prompt': 'Ketik nama produk untuk mulai mencari',
+  'related-products': 'Anda Mungkin Juga Suka',
   'no-products-found-for': 'Tidak ada produk yang ditemukan untuk "{ $query }"',
 };
 

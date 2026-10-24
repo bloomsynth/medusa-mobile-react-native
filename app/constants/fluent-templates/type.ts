@@ -157,5 +157,6 @@ export interface FluentTemplate {
   search: string;
   'search-products': string;
   'search-prompt': string;
+  'related-products': string;
   'no-products-found-for': string;
 }

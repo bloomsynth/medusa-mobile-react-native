@@ -28,6 +28,9 @@ type FeaturedCollectionProps = {
   name?: string;
   showCta?: boolean;
   queryKey?: string[];
+  additionalParams?: Partial<HttpTypes.StoreProductListParams>;
+  // Product to leave out of the results, e.g. the one currently being viewed.
+  excludeProductId?: string;
 };
 
 const FeaturedCollection = ({
@@ -35,6 +38,8 @@ const FeaturedCollection = ({
   name,
   showCta = true,
   queryKey,
+  additionalParams,
+  excludeProductId,
 }: FeaturedCollectionProps) => {
   const { l10n } = useLocalization();
   const navigation = useNavigation();
@@ -44,11 +49,21 @@ const FeaturedCollection = ({
     queryKey: queryKey ?? ['products', name, region?.id],
     queryFn: async () => {
       const response = await apiClient.store.product.list({
-        limit: limit,
+        // Fetch one extra so the excluded product does not shorten the list.
+        limit: excludeProductId ? limit + 1 : limit,
         region_id: region?.id,
         fields: '*variants.calculated_price',
+        ...additionalParams,
       });
-      return response;
+      if (!excludeProductId) {
+        return response;
+      }
+      return {
+        ...response,
+        products: response.products
+          .filter(product => product.id !== excludeProductId)
+          .slice(0, limit),
+      };
     },
   });
 
