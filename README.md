@@ -177,9 +177,9 @@ Here are the planned features and improvements:
 - [x] 🌍 Region selector for multi-region support
 - [x] 📖 Developer Guide
 - [x] 🌐 Localization support
-- [ ] 💳 Stripe integration for secure payments
 - [x] 🔄 Related products suggestions
 - [x] 🔍 Product search functionality
+- [ ] 💳 Stripe integration for secure payments
 - [ ] 📦 cli-tool to generate a new project from this template
 - [ ] 🎨 Advanced customization options
 - [ ] 🔌 Plugins to extend the functionality of the app
