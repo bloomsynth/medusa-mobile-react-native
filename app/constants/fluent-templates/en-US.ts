@@ -90,7 +90,12 @@ const en_US: FluentTemplate = {
   'select-shipping-method': 'Select Shipping Method',
   calculating: 'Calculating',
   'no-region-id': 'No region ID',
-  'stripe-payment-coming-soon': 'Stripe payment UI coming soon!',
+  'stripe-payment-info':
+    "You'll enter your card details securely with Stripe when you pay.",
+  'stripe-not-configured':
+    "Card payments aren't set up in this app yet. Choose another payment method.",
+  'payment-not-ready':
+    "Payment couldn't be started. Go back to Payment and try again.",
   'no-additional-actions-required-for-manual-payment':
     'No additional actions required for manual payment.',
   'payment-provider-is-in-development':

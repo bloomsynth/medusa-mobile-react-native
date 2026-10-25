@@ -52,8 +52,12 @@ from the cart; subsequent transitions are controlled by the screen.
   falls back to a pending or authorized cart session. Do not derive the summary
   solely from a possibly stale `cart.payment_collection`.
 - Manual payment completes the cart, checks whether the API returned an order or
-  an error cart, resets the cart, and navigates to the order. Stripe's external
-  flow is not implemented yet.
+  an error cart, resets the cart, and navigates to the order.
+- Stripe keeps the PaymentIntent client secret from the session the payment step
+  initiates. On review, `app/utils/stripe.ts` opens the Payment Sheet, which
+  confirms the payment; the order is completed only after it succeeds. Closing
+  the sheet leaves the customer on review. `StripeProvider` is mounted only when
+  `STRIPE_PUBLISHABLE_KEY` is set, because the native SDK rejects an empty key.
 
 The animated View Cart control is in
 `app/components/cart/animated-cart-button.tsx`. Its reveal wrapper animates width,
@@ -97,6 +101,8 @@ affected platform and integrations. Update this table when a constraint changes.
   and the transition after a saved selection.
 - `checkout-payment-summary.test.tsx` checks explicit provider selection and the
   fallback to an authorized cart session.
+- `checkout-stripe.test.ts` checks reading the client secret, billing prefill,
+  and paid, canceled, and failed Payment Sheet results with the SDK mocked.
 
 These are unit/regression tests. They do not validate live inventory responses,
 Android/iOS builds, actual storage persistence, native hit areas, animations, or

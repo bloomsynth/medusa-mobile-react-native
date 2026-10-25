@@ -29,12 +29,22 @@ import {
   useActivePaymentSession,
 } from '@data/hooks';
 import { StoreCartAddress } from '@medusajs/types';
+import { useStripe } from '@stripe/stripe-react-native';
 import utils from '@utils/common';
+import {
+  STRIPE_PROVIDER_ID,
+  getBillingDetails,
+  getStripeClientSecret,
+  presentStripePayment,
+  stripePublishableKey,
+} from '@utils/stripe';
+import { displayName as merchantDisplayName } from '../../app.json';
 
 const Checkout = () => {
   const { l10n } = useLocalization();
   const { cart, updateCart, resetCart } = useCart();
   const navigation = useNavigation();
+  const stripe = useStripe();
   const [isLoading, setIsLoading] = useState(false);
   const [isUpdatingShipping, setIsUpdatingShipping] = useState(false);
   const countries = useCountries();
@@ -42,6 +52,9 @@ const Checkout = () => {
   const activeSession = useActivePaymentSession();
   const [selectedPaymentProviderId, setSelectedPaymentProviderId] = useState(
     activeSession?.provider_id,
+  );
+  const [stripeClientSecret, setStripeClientSecret] = useState(() =>
+    getStripeClientSecret(cart?.payment_collection),
   );
 
   const [activeStep, setActiveStep] = useState(currentStep);
@@ -170,10 +183,58 @@ const Checkout = () => {
       throw new Error(l10n.getString('no-cart-found'));
     }
 
-    await apiClient.store.payment.initiatePaymentSession(cart, {
-      provider_id: selectedPaymentProviderId,
-    });
+    if (
+      selectedPaymentProviderId === STRIPE_PROVIDER_ID &&
+      !stripePublishableKey
+    ) {
+      throw new Error(l10n.getString('stripe-not-configured'));
+    }
+
+    const { payment_collection } =
+      await apiClient.store.payment.initiatePaymentSession(cart, {
+        provider_id: selectedPaymentProviderId,
+      });
+    setStripeClientSecret(getStripeClientSecret(payment_collection));
     setActiveStep('review');
+  };
+
+  const completeOrder = async (cartId: string) => {
+    const response = await apiClient.store.cart.complete(cartId);
+
+    if (response.type === 'cart') {
+      throw new Error(
+        response.error?.message || l10n.getString('failed-to-complete-order'),
+      );
+    }
+    await resetCart();
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [
+          {
+            name: 'Main',
+          },
+          {
+            name: 'OrderDetail',
+            params: { orderId: response.order.id },
+          },
+        ],
+      }),
+    );
+  };
+
+  const payWithStripe = async () => {
+    if (!stripePublishableKey) {
+      throw new Error(l10n.getString('stripe-not-configured'));
+    }
+    if (!stripeClientSecret) {
+      throw new Error(l10n.getString('payment-not-ready'));
+    }
+    return presentStripePayment(stripe, {
+      clientSecret: stripeClientSecret,
+      merchantDisplayName,
+      billingDetails: getBillingDetails(cart),
+    });
   };
 
   const handleOrderComplete = async () => {
@@ -187,36 +248,17 @@ const Checkout = () => {
 
     if (selectedProvider?.hasExternalStep) {
       switch (selectedPaymentProviderId) {
-        case 'pp_stripe_stripe':
-          // TODO: Implement Stripe payment flow
+        case STRIPE_PROVIDER_ID:
+          if ((await payWithStripe()) === 'canceled') {
+            return;
+          }
           break;
         default:
           throw new Error(l10n.getString('payment-provider-not-supported'));
       }
-    } else {
-      const response = await apiClient.store.cart.complete(cart.id);
-
-      if (response.type === 'cart') {
-        throw new Error(
-          response.error?.message || l10n.getString('failed-to-complete-order'),
-        );
-      }
-      await resetCart();
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [
-            {
-              name: 'Main',
-            },
-            {
-              name: 'OrderDetail',
-              params: { orderId: response.order.id },
-            },
-          ],
-        }),
-      );
     }
+
+    await completeOrder(cart.id);
   };
 
   const handleContinue = async () => {

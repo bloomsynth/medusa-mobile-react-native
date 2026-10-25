@@ -10,6 +10,16 @@ jest.mock('@react-native-async-storage/async-storage', () =>
   require('@react-native-async-storage/async-storage/jest'),
 );
 
+jest.mock('@stripe/stripe-react-native', () => ({
+  ...require('@stripe/stripe-react-native/jest/mock'),
+  StripeProvider: ({ children }) => children,
+  PaymentSheetError: {
+    Failed: 'Failed',
+    Canceled: 'Canceled',
+    Timeout: 'Timeout',
+  },
+}));
+
 jest.mock(
   'react-native-safe-area-context',
   () => require('react-native-safe-area-context/jest/mock').default,

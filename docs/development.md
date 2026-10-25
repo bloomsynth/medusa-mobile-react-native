@@ -60,11 +60,12 @@ repository does not perform those merges or database migrations.
 compiled into the app by `react-native-dotenv`; restart Metro with a cleared
 cache and reload the app after changing them.
 
-| Variable              | Purpose                                                 |
-| --------------------- | ------------------------------------------------------- |
-| `MEDUSA_BACKEND_URL`  | Medusa server base URL reachable from the device        |
-| `PUBLISHABLE_API_KEY` | Store API key associated with the product sales channel |
-| `DEFAULT_LOCALE`      | `en-US` or `id-ID`; default is `en-US`                  |
+| Variable                 | Purpose                                                 |
+| ------------------------ | ------------------------------------------------------- |
+| `MEDUSA_BACKEND_URL`     | Medusa server base URL reachable from the device        |
+| `PUBLISHABLE_API_KEY`    | Store API key associated with the product sales channel |
+| `DEFAULT_LOCALE`         | `en-US` or `id-ID`; default is `en-US`                  |
+| `STRIPE_PUBLISHABLE_KEY` | Stripe publishable key; empty disables card payment     |
 
 | Target                  | Local backend URL                                               |
 | ----------------------- | --------------------------------------------------------------- |
@@ -75,6 +76,29 @@ cache and reload the app after changing them.
 A saved locale overrides `DEFAULT_LOCALE`. Region, cart, and authentication also
 persist in AsyncStorage; use the app's settings/logout controls where possible
 when diagnosing stale state.
+
+## Stripe payments
+
+Checkout pays with Stripe through the Payment Sheet from
+`@stripe/stripe-react-native`. The backend must register Medusa's Stripe
+provider (`@medusajs/medusa/payment-stripe`, id `stripe`) with the secret key,
+and the region must enable `pp_stripe_stripe`. Only the publishable key goes in
+this app's `.env`; the secret key stays in the backend.
+
+Use test-mode keys (`pk_test_…` and `sk_test_…`) and Stripe's
+[test cards](https://docs.stripe.com/testing). The Stripe account's country
+limits which cards work: an Indian account registered as an individual accepts
+only domestic INR payments, so test with an INR region and Stripe's India card
+`4000 0035 6000 0008`.
+
+Cards that need 3D Secure complete in the sheet, but Medusa relies on Stripe
+webhooks to update payments confirmed later. For local testing, forward them
+with the Stripe CLI and set the printed `whsec_…` value as the backend's
+webhook secret:
+
+```sh
+stripe listen --forward-to localhost:9000/hooks/payment/stripe_stripe
+```
 
 ## Run Android
 
@@ -160,10 +184,14 @@ you exercised, and which checks remain unverified.
 - Checkout: submit a valid address; confirm payment cannot be reached without a
   saved shipping method or while a shipping update is in flight; select manual
   payment, confirm the summary, and complete an order on a development backend.
+- Stripe: in a Stripe-enabled region, select Stripe and pay with a test card;
+  confirm the order opens and the payment appears in the Stripe Dashboard. Close
+  the sheet once to confirm checkout stays on review, and try a declined card.
 - Authentication and region changes: confirm the cart follows the customer and
   selected region when touching those flows.
 
-Stripe's external payment flow is still a TODO. A successful manual-payment
-checkout does not validate Stripe. Jest covers shipping guards and payment
-summary selection; native gestures, live inventory, and full order completion
-require the relevant manual checks above.
+A successful manual-payment checkout does not validate Stripe. Jest covers
+shipping guards, payment summary selection, and the Stripe helper's handling of
+sessions and Payment Sheet results with the native SDK mocked; native gestures,
+live inventory, the real Payment Sheet, and full order completion require the
+relevant manual checks above.

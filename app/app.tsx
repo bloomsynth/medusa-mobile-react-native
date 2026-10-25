@@ -36,30 +36,45 @@ import Search from '@screens/search';
 
 import '@styles/global.css';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { StripeProvider } from '@stripe/stripe-react-native';
+import { stripePublishableKey } from '@utils/stripe';
 
 export type RootStackParamList = StaticParamList<typeof RootStack>;
 
 const queryClient = new QueryClient();
 
+// The native Stripe SDK rejects an empty key, so card payments stay off
+// until STRIPE_PUBLISHABLE_KEY is set.
+const PaymentsProvider = ({ children }: { children: React.ReactElement }) =>
+  stripePublishableKey ? (
+    <StripeProvider publishableKey={stripePublishableKey}>
+      {children}
+    </StripeProvider>
+  ) : (
+    children
+  );
+
 export default function App() {
   return (
-    <ThemeProvider name="default">
-      <LocaleProvider>
-        <RegionProvider>
-          <CartProvider>
-            <CustomerProvider>
-              <QueryClientProvider client={queryClient}>
-                <GestureHandlerRootView>
-                  <SafeAreaProvider>
-                    <Navigation />
-                  </SafeAreaProvider>
-                </GestureHandlerRootView>
-              </QueryClientProvider>
-            </CustomerProvider>
-          </CartProvider>
-        </RegionProvider>
-      </LocaleProvider>
-    </ThemeProvider>
+    <PaymentsProvider>
+      <ThemeProvider name="default">
+        <LocaleProvider>
+          <RegionProvider>
+            <CartProvider>
+              <CustomerProvider>
+                <QueryClientProvider client={queryClient}>
+                  <GestureHandlerRootView>
+                    <SafeAreaProvider>
+                      <Navigation />
+                    </SafeAreaProvider>
+                  </GestureHandlerRootView>
+                </QueryClientProvider>
+              </CustomerProvider>
+            </CartProvider>
+          </RegionProvider>
+        </LocaleProvider>
+      </ThemeProvider>
+    </PaymentsProvider>
   );
 }
 
