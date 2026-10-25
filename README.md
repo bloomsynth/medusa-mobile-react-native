@@ -8,7 +8,7 @@ Browsing, search, cart, checkout, accounts, and themes are ready on day one, so 
 [![GitHub stars](https://img.shields.io/github/stars/bloomsynth/medusa-mobile-react-native?style=flat&logo=github)](https://github.com/bloomsynth/medusa-mobile-react-native/stargazers)
 [![Verify](https://github.com/bloomsynth/medusa-mobile-react-native/actions/workflows/verify.yml/badge.svg)](https://github.com/bloomsynth/medusa-mobile-react-native/actions/workflows/verify.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
-[![Tested with Medusa 2.21.2](https://img.shields.io/badge/Medusa-tested%20with%202.21.2-blue)](https://github.com/medusajs/medusa/releases/tag/v2.21.2)
+[![Tested with Medusa 2.22.1](https://img.shields.io/badge/Medusa-tested%20with%202.22.1-blue)](https://github.com/medusajs/medusa/releases/tag/v2.22.1)
 [![Platforms](https://img.shields.io/badge/platforms-iOS%20%7C%20Android-lightgrey)](#-getting-started-with-react-native-medusa)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6?logo=typescript&logoColor=white)](tsconfig.json)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)](CONTRIBUTING.md)
@@ -30,7 +30,7 @@ Browsing, search, cart, checkout, accounts, and themes are ready on day one, so 
 ## 💡 Why Medusa Mobile?
 
 - **Complete shopping flow.** Product listing, search, cart, promo codes, guest checkout, accounts, and order history all work against a real Medusa v2 backend.
-- **Pinned to Medusa.** Tested with the Medusa **2.21.2** starter backend using the official JS SDK.
+- **Pinned to Medusa.** Tested with the Medusa **2.22.1** starter backend using the official JS SDK.
 - **Easy to brand.** It ships with several themes and dark mode, built on NativeWind (Tailwind) tokens you can replace.
 - **Ready for real stores.** It supports multiple regions, Fluent localization, strict TypeScript, CI, and unit tests.
 - **Plain React Native CLI.** There are no proprietary services, it is MIT licensed, and you can [add Expo](#-expo-usage) if you prefer it.
