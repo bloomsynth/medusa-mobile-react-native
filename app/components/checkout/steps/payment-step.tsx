@@ -5,6 +5,7 @@ import Text from '@components/common/text';
 import { useQuery } from '@tanstack/react-query';
 import { HttpTypes } from '@medusajs/types';
 import apiClient from '@api/client';
+import { STRIPE_PROVIDER_ID, stripePublishableKey } from '@utils/stripe';
 import {
   PaymentProvider,
   PAYMENT_PROVIDER_DETAILS_MAP,
@@ -56,10 +57,14 @@ const PaymentStep = ({
     }
 
     switch (selectedProviderId) {
-      case 'pp_stripe_stripe':
+      case STRIPE_PROVIDER_ID:
         return (
           <Text className="text-content">
-            {l10n.getString('stripe-payment-coming-soon')}
+            {l10n.getString(
+              stripePublishableKey
+                ? 'stripe-payment-info'
+                : 'stripe-not-configured',
+            )}
           </Text>
         );
       case 'pp_system_default':

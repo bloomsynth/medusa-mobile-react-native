@@ -90,7 +90,12 @@ const id_ID: FluentTemplate = {
   'select-shipping-method': 'Pilih Metode Pengiriman',
   calculating: 'Menghitung',
   'no-region-id': 'ID wilayah tidak ada',
-  'stripe-payment-coming-soon': 'Antarmuka pembayaran Stripe segera hadir!',
+  'stripe-payment-info':
+    'Anda akan memasukkan detail kartu dengan aman melalui Stripe saat membayar.',
+  'stripe-not-configured':
+    'Pembayaran kartu belum disiapkan di aplikasi ini. Pilih metode pembayaran lain.',
+  'payment-not-ready':
+    'Pembayaran tidak dapat dimulai. Kembali ke Pembayaran dan coba lagi.',
   'no-additional-actions-required-for-manual-payment':
     'Tidak ada tindakan tambahan yang diperlukan untuk pembayaran manual.',
   'payment-provider-is-in-development':

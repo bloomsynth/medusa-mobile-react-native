@@ -86,7 +86,9 @@ export interface FluentTemplate {
   'select-shipping-method': string;
   calculating: string;
   'no-region-id': string;
-  'stripe-payment-coming-soon': string;
+  'stripe-payment-info': string;
+  'stripe-not-configured': string;
+  'payment-not-ready': string;
   'no-additional-actions-required-for-manual-payment': string;
   'payment-provider-is-in-development': string;
   'loading-payment-options': string;
