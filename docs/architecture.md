@@ -88,9 +88,13 @@ Check its installed supported range rather than upgrading the compiler
 independently. Avoid `--force` or `--legacy-peer-deps` as a compatibility fix.
 
 Dependabot groups npm minor/patch updates weekly and opens major updates
-separately. For an upgrade, inspect peer requirements and migration notes, update
-manifest and lockfile together, run `npm run verify`, then build and exercise the
-affected platform and integrations. Update this table when a constraint changes.
+separately. It ignores `react`, `react-test-renderer`, `react-native`, and
+`@react-native/*`, which move together in a manual React Native upgrade, and
+ESLint 10 and later; update those ignore rules in `.github/dependabot.yml` when
+the matching constraint above changes. For an upgrade, inspect peer
+requirements and migration notes, update manifest and lockfile together, run
+`npm run verify`, then build and exercise the affected platform and
+integrations. Update this table when a constraint changes.
 
 ## Test boundaries
 
