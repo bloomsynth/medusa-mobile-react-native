@@ -19,3 +19,15 @@ updates:
         update-types:
           - "minor"
           - "patch"
+    # React Native and the packages pinned to it are upgraded together by hand;
+    # see "Dependency constraints" in docs/architecture.md.
+    ignore:
+      # Pinned to the renderer embedded in the installed React Native release.
+      - dependency-name: "react"
+      - dependency-name: "react-test-renderer"
+      # The React Native package family must stay on one release.
+      - dependency-name: "react-native"
+      - dependency-name: "@react-native/*"
+      # @react-native/eslint-config supports ESLint 8.x and 9.x only.
+      - dependency-name: "eslint"
+        versions: [">=10.0.0"]
