@@ -16,7 +16,7 @@
     "@fluent/bundle": "^0.19.1",
     "@fluent/langneg": "^0.7.0",
     "@fluent/react": "^0.15.2",
-    "@hookform/resolvers": "^5.9.1",
+    "@hookform/resolvers": "^6.0.0",
     "@medusajs/js-sdk": "^2.21.2",
     "@medusajs/types": "^2.21.2",
     "@react-native-async-storage/async-storage": "^3.1.1",
