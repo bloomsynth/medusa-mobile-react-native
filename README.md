@@ -81,7 +81,7 @@ Fully customizable using the existing themes or create your own.
 ## 📋 Prerequisites
 
 Before you begin, ensure you have:
-- Node.js 22.13+ (22.x), 24.3+ (24.x), or 26+
+- Node.js 22.22+ (22.x), 24.3+ (24.x), or 26+
 - React Native development environment - [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment)
 - A running Medusa v2 backend server - [Medusa v2 installation](https://docs.medusajs.com/learn/installation)
 
