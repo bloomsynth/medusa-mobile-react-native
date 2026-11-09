@@ -253,7 +253,15 @@ async function main(argv, io = process) {
       `Creating ${names.displayName} in ${target}\n` +
         `Template: ${template}${ref ? ` at ${ref}` : ''}\n`,
     );
-    const cloneArgs = ['clone', '--depth', '1', '--quiet'];
+    // Cloning a tag checks out a detached HEAD; skip git's note about it.
+    const cloneArgs = [
+      '-c',
+      'advice.detachedHead=false',
+      'clone',
+      '--depth',
+      '1',
+      '--quiet',
+    ];
     if (ref) {
       cloneArgs.push('--branch', ref);
     }

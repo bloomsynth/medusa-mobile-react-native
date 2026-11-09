@@ -258,9 +258,6 @@ describe('customizeProject', () => {
     ]) {
       expect(fs.existsSync(path.join(project, file))).toBe(false);
     }
-    expect(
-      listFiles(project, 'android').filter(f => f.endsWith('.log')),
-    ).toEqual([]);
     expect(fs.existsSync(path.join(project, 'LICENSE'))).toBe(true);
     expect(
       fs.existsSync(path.join(project, '.github/workflows/verify.yml')),
@@ -354,6 +351,35 @@ describe('main', () => {
     // .env is ignored by the template's .gitignore, so it stays uncommitted.
     expect(git(target, ['ls-files', '.env'])).toBe('');
     expect(fs.existsSync(path.join(target, '.env'))).toBe(true);
+  });
+
+  test('clones a release tag without printing git notes', () => {
+    const template = commitTemplate();
+    git(template, ['tag', 'create-medusa-mobile@9.9.9']);
+    const target = path.join(makeTemporaryDirectory(), 'acme-shop');
+    // git writes to the terminal, so run the CLI as a process to capture it.
+    const result = spawnSync(
+      process.execPath,
+      [
+        path.join(
+          ROOT,
+          'packages/create-medusa-mobile/bin/create-medusa-mobile.js',
+        ),
+        target,
+        '--template',
+        template,
+        '--ref',
+        'create-medusa-mobile@9.9.9',
+        '--skip-install',
+        '--skip-git',
+        '--yes',
+      ],
+      { encoding: 'utf8' },
+    );
+    expect(result.stderr).toBe('');
+    expect(result.status).toBe(0);
+    expect(result.stdout).not.toMatch(/detached HEAD|switching to/i);
+    expect(JSON.parse(read(target, 'app.json')).name).toBe('AcmeShop');
   });
 
   test('refuses a non-empty directory and leaves it unchanged', async () => {

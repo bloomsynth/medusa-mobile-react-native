@@ -17,7 +17,6 @@ const PRUNED_PATHS = [
   'CODE_OF_CONDUCT.md',
   'SECURITY.md',
 ];
-const PRUNED_PATTERNS = [/^android\/(hs_err|replay)_pid\d+\.log$/];
 
 // Directories never copied into a generated project or scanned for names.
 const SKIPPED_DIRECTORIES = new Set([
@@ -109,11 +108,6 @@ function replaceOnce(text, search, replacement, label) {
 function prune(root) {
   for (const relative of PRUNED_PATHS) {
     fs.rmSync(path.join(root, relative), { recursive: true, force: true });
-  }
-  for (const entry of walk(root)) {
-    if (!entry.directory && PRUNED_PATTERNS.some(re => re.test(entry.path))) {
-      fs.rmSync(path.join(root, entry.path));
-    }
   }
   // Remove a parent left empty by pruning, such as packages/ or .github/.
   for (const parent of ['packages', '.github']) {
