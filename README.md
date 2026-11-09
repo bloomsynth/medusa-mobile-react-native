@@ -29,6 +29,7 @@ Browsing, search, cart, checkout, accounts, and themes are ready on day one, so 
 
 ## 💡 Why Medusa Mobile?
 
+- **One command to start.** `npx create-medusa-mobile my-store` creates your store's app with its own name, bundle ID, and backend settings.
 - **Complete shopping flow.** Product listing, search, cart, promo codes, guest checkout, accounts, and order history all work against a real Medusa v2 backend.
 - **Pinned to Medusa.** Tested with the Medusa **2.22.1** starter backend using the official JS SDK.
 - **Easy to brand.** It ships with several themes and dark mode, built on NativeWind (Tailwind) tokens you can replace.
@@ -40,12 +41,15 @@ Browsing, search, cart, checkout, accounts, and themes are ready on day one, so 
 You need a running [Medusa v2 backend](https://docs.medusajs.com/learn/installation) and a [React Native environment](https://reactnative.dev/docs/set-up-your-environment).
 
 ```bash
-git clone https://github.com/bloomsynth/medusa-mobile-react-native.git medusa-mobile
-cd medusa-mobile && npm ci && cp .env.template .env   # then set your backend URL and publishable key
+npx create-medusa-mobile my-store
+cd my-store
 npm start   # in another terminal: npm run android or npm run ios
 ```
 
-For iOS pods, emulator networking, and troubleshooting, see [full setup](#-getting-started-with-react-native-medusa).
+The CLI asks for your app name, bundle ID, backend URL, and publishable key. It
+then renames the Android and iOS projects, writes `.env`, installs dependencies,
+and makes the first Git commit. For iOS pods, emulator networking, and
+troubleshooting, see [full setup](#-getting-started-with-react-native-medusa).
 
 ## ✨ Features
 
@@ -81,32 +85,40 @@ Fully customizable using the existing themes or create your own.
 ## 📋 Prerequisites
 
 Before you begin, ensure you have:
-- Node.js 22.22+ (22.x), 24.3+ (24.x), or 26+
+- Node.js 22.22+ (22.x), 24.3+ (24.x), or 26+, and Git
 - React Native development environment - [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment)
 - A running Medusa v2 backend server - [Medusa v2 installation](https://docs.medusajs.com/learn/installation)
 
 ## 🚀 Getting Started with React Native Medusa
 
-### Step 1: Environment Setup
+### Step 1: Create your project
 
-1. Clone the repository:
+```bash
+npx create-medusa-mobile my-store
+cd my-store
+```
+
+The CLI prompts for the app name, display name, bundle ID, Medusa backend URL,
+and publishable API key. It copies this template, renames the Android and iOS
+projects, writes `.env`, runs `npm ci`, and makes an initial Git commit. Pass
+`--yes` and options such as `--bundle-id` to skip the prompts; see the
+[CLI guide](packages/create-medusa-mobile/README.md) for every option.
+
+For the backend URL, use `http://10.0.2.2:9000` for the Android Studio emulator
+(the default), `http://localhost:9000` for the iOS simulator, or your computer’s
+LAN IP for a physical device. The publishable key must be linked to the sales
+channel containing your products. You can change both later in `.env`. See the
+[development guide](docs/development.md) for backend setup and troubleshooting.
+
+To work on Medusa Mobile itself, for example to
+[contribute](CONTRIBUTING.md), clone the repository instead:
+
 ```bash
 git clone git@github.com:bloomsynth/medusa-mobile-react-native.git medusa-mobile
 cd medusa-mobile
-```
-
-2. Install dependencies:
-```bash
 npm ci
-```
-
-3. Configure environment variables:
-```bash
 cp .env.template .env
 ```
-Edit `.env` with your Medusa backend URL and publishable API key.
-
-For the Android Studio emulator, use `http://10.0.2.2:9000` (the template default). Use `http://localhost:9000` for the iOS simulator or your computer’s LAN IP for a physical device. The publishable key must be linked to the sales channel containing your products. See the [development guide](docs/development.md) for backend setup and troubleshooting.
 
 ### Step 2: Start Metro Server
 
@@ -134,19 +146,6 @@ Run the application:
 ```bash
 npm run ios
 ```
-
-## 📦 Create a new project
-
-To start your own store from this template, run:
-
-```bash
-npx create-medusa-mobile my-store
-```
-
-It prompts for the app name, display name, and bundle ID, and for your backend
-URL and publishable key. It then renames the Android and iOS projects, writes
-`.env`, runs `npm ci`, and makes an initial Git commit. See the
-[CLI guide](packages/create-medusa-mobile/README.md) for options.
 
 ## 📱 Expo Usage
 
