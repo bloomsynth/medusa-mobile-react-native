@@ -11,7 +11,10 @@ const { PassThrough } = require('node:stream');
 const {
   customizeProject,
 } = require('../packages/create-medusa-mobile/lib/customize');
-const { main } = require('../packages/create-medusa-mobile/lib/create');
+const {
+  defaultTemplate,
+  main,
+} = require('../packages/create-medusa-mobile/lib/create');
 const { resolveNames } = require('../packages/create-medusa-mobile/lib/names');
 
 jest.setTimeout(60000);
@@ -248,6 +251,7 @@ describe('customizeProject', () => {
     for (const file of [
       'packages',
       '__tests__/create-medusa-mobile.test.js',
+      '.github/workflows/publish-cli.yml',
       '.github/ISSUE_TEMPLATE',
       'CODE_OF_CONDUCT.md',
       'SECURITY.md',
@@ -258,6 +262,9 @@ describe('customizeProject', () => {
       listFiles(project, 'android').filter(f => f.endsWith('.log')),
     ).toEqual([]);
     expect(fs.existsSync(path.join(project, 'LICENSE'))).toBe(true);
+    expect(
+      fs.existsSync(path.join(project, '.github/workflows/verify.yml')),
+    ).toBe(true);
     expect(read(project, 'README.md')).toMatch(/^# Acme & Co's Shop$/m);
   });
 
@@ -275,6 +282,29 @@ describe('customizeProject', () => {
       'android/app/src/main/java/com/rnstartermedusa/shop/MainActivity.kt',
       'android/app/src/main/java/com/rnstartermedusa/shop/MainApplication.kt',
     ]);
+  });
+});
+
+describe('defaultTemplate', () => {
+  test('uses the checkout when run from the template repository', () => {
+    expect(
+      defaultTemplate(path.join(ROOT, 'packages/create-medusa-mobile')),
+    ).toEqual({ template: ROOT });
+  });
+
+  test('clones the release tag of its version when installed from npm', () => {
+    const installed = path.join(
+      makeTemporaryDirectory(),
+      'node_modules/create-medusa-mobile',
+    );
+    fs.mkdirSync(installed, { recursive: true });
+    const {
+      version,
+    } = require('../packages/create-medusa-mobile/package.json');
+    expect(defaultTemplate(installed)).toEqual({
+      template: 'https://github.com/bloomsynth/medusa-mobile-react-native.git',
+      ref: `create-medusa-mobile@${version}`,
+    });
   });
 });
 

@@ -12,6 +12,7 @@ const PRUNED_PATHS = [
   '.git',
   'packages/create-medusa-mobile',
   '__tests__/create-medusa-mobile.test.js',
+  '.github/workflows/publish-cli.yml',
   '.github/ISSUE_TEMPLATE',
   'CODE_OF_CONDUCT.md',
   'SECURITY.md',

@@ -18,6 +18,9 @@ const {
 
 const { version } = require('../package.json');
 
+// Release tags name the CLI version, e.g. create-medusa-mobile@0.1.0.
+const RELEASE_TAG_PREFIX = 'create-medusa-mobile@';
+
 const USAGE = `Usage: create-medusa-mobile <directory> [options]
 
 Creates a React Native storefront for Medusa v2 from the Medusa Mobile template.
@@ -36,7 +39,8 @@ Store connection (written to .env):
 
 Template and setup:
   --template <git-url|dir>  Template repository (default: ${TEMPLATE_REPOSITORY})
-  --ref <branch|tag>        Template branch or tag (default: its default branch)
+  --ref <branch|tag>        Template branch or tag (default: ${RELEASE_TAG_PREFIX}${version},
+                            the release this CLI was tested with)
   --skip-install            Do not run npm ci
   --skip-git                Do not initialize a Git repository
   -y, --yes                 Use defaults instead of prompting
@@ -92,6 +96,25 @@ function run(command, args, options) {
     throw result.error;
   }
   return result.status === 0;
+}
+
+/**
+ * The published CLI clones the release tag of its own version, so each version
+ * customizes the template it was tested against. Run from a checkout of the
+ * template repository, which has no tag before a release, it clones that
+ * checkout's last commit instead.
+ */
+function defaultTemplate(packageRoot = path.join(__dirname, '..')) {
+  const checkout = path.resolve(packageRoot, '../..');
+  const isCheckout =
+    fs.existsSync(path.join(checkout, '.git')) &&
+    fs.existsSync(path.join(checkout, 'packages/create-medusa-mobile'));
+  return isCheckout
+    ? { template: checkout }
+    : {
+        template: `${TEMPLATE_REPOSITORY}.git`,
+        ref: `${RELEASE_TAG_PREFIX}${version}`,
+      };
 }
 
 function templateSource(template) {
@@ -218,16 +241,25 @@ async function main(argv, io = process) {
       throw new UsageError(`${directory} already exists and is not empty.`);
     }
 
-    const template = values.template ?? `${TEMPLATE_REPOSITORY}.git`;
-    io.stdout.write(`Creating ${names.displayName} in ${target}\n`);
+    const defaults = values.template
+      ? { template: values.template }
+      : defaultTemplate();
+    const template = defaults.template;
+    const ref = values.ref ?? defaults.ref;
+    io.stdout.write(
+      `Creating ${names.displayName} in ${target}\n` +
+        `Template: ${template}${ref ? ` at ${ref}` : ''}\n`,
+    );
     const cloneArgs = ['clone', '--depth', '1', '--quiet'];
-    if (values.ref) {
-      cloneArgs.push('--branch', values.ref);
+    if (ref) {
+      cloneArgs.push('--branch', ref);
     }
     cloneArgs.push(templateSource(template), target);
     existed = fs.existsSync(target);
     if (!run('git', cloneArgs)) {
-      throw new Error(`Could not clone the template from ${template}.`);
+      throw new Error(
+        `Could not clone the template from ${template}${ref ? ` at ${ref}` : ''}.`,
+      );
     }
     cloned = true;
 
@@ -291,4 +323,4 @@ ${values['skip-install'] ? '  npm ci\n' : ''}${
   }
 }
 
-module.exports = { USAGE, main, parse };
+module.exports = { RELEASE_TAG_PREFIX, USAGE, defaultTemplate, main, parse };

@@ -137,11 +137,10 @@ npm run ios
 
 ## 📦 Create a new project
 
-To start your own store from this template, use the `create-medusa-mobile` CLI
-from a clone of this repository:
+To start your own store from this template, run:
 
 ```bash
-node packages/create-medusa-mobile/bin/create-medusa-mobile.js ../my-store
+npx create-medusa-mobile my-store
 ```
 
 It prompts for the app name, display name, and bundle ID, and for your backend
