@@ -13,7 +13,9 @@ Browsing, search, cart, checkout, accounts, and themes are ready on day one, so 
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6?logo=typescript&logoColor=white)](tsconfig.json)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)](CONTRIBUTING.md)
 
-[Quick start](#-quick-start) · [Features](#-features) · [Themes](#-themes) · [Roadmap](#-roadmap) · [Contributing](CONTRIBUTING.md)
+[Quick start](#-quick-start) · [Features](#-features) · [Themes](#-themes) · [Roadmap](#-roadmap) · [Flutter version](#-flutter-version) · [Contributing](CONTRIBUTING.md)
+
+Building with Flutter? See [Medusa Mobile for Flutter](https://github.com/bloomsynth/medusa-mobile-flutter).
 
 ⭐ **If Medusa Mobile saves you time, please star the repo.** It helps other Medusa developers find it.
 
@@ -153,6 +155,10 @@ URL and publishable key. It then renames the Android and iOS projects, writes
 This project uses React Native CLI to ensure maximum flexibility for all developers. However, Expo users are more than welcome! You can easily add Expo support with a single command.
 
 [Learn more about migrating to Expo CLI](https://docs.expo.dev/bare/using-expo-cli/)
+
+## 🐦 Flutter version
+
+[Medusa Mobile for Flutter](https://github.com/bloomsynth/medusa-mobile-flutter) is a port of this app to Flutter, with the same screens and design: browsing, search, cart, checkout with manual payment and Stripe, accounts, regions, and themes. Use it if your team works in Dart. The [Medusa Mobile site](https://bloomsynth.com/medusa-mobile/) covers both apps.
 
 ## 📁 Project Structure
 
