@@ -135,6 +135,19 @@ Run the application:
 npm run ios
 ```
 
+## 📦 Create a new project
+
+To start your own store from this template, run:
+
+```bash
+npx create-medusa-mobile my-store
+```
+
+It prompts for the app name, display name, and bundle ID, and for your backend
+URL and publishable key. It then renames the Android and iOS projects, writes
+`.env`, runs `npm ci`, and makes an initial Git commit. See the
+[CLI guide](packages/create-medusa-mobile/README.md) for options.
+
 ## 📱 Expo Usage
 
 This project uses React Native CLI to ensure maximum flexibility for all developers. However, Expo users are more than welcome! You can easily add Expo support with a single command.
@@ -180,7 +193,7 @@ Here are the planned features and improvements:
 - [x] 🔄 Related products suggestions
 - [x] 🔍 Product search functionality
 - [x] 💳 Stripe integration for secure payments
-- [ ] 📦 cli-tool to generate a new project from this template
+- [x] 📦 cli-tool to generate a new project from this template
 - [ ] 🎨 Advanced customization options
 - [ ] 🔌 Plugins to extend the functionality of the app
 

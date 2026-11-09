@@ -1,0 +1,28 @@
+{
+  "name": "create-medusa-mobile",
+  "version": "0.1.0",
+  "description": "Create a React Native storefront for Medusa v2 from the Medusa Mobile template",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bloomsynth/medusa-mobile-react-native.git",
+    "directory": "packages/create-medusa-mobile"
+  },
+  "keywords": [
+    "medusa",
+    "react-native",
+    "ecommerce",
+    "storefront",
+    "template"
+  ],
+  "bin": {
+    "create-medusa-mobile": "bin/create-medusa-mobile.js"
+  },
+  "files": [
+    "bin",
+    "lib"
+  ],
+  "engines": {
+    "node": "^22.22.0 || ^24.3.0 || >=26.0.0"
+  }
+}
