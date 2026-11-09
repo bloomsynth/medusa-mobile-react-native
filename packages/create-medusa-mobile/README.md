@@ -54,5 +54,6 @@ URL or a local repository.
 ## Links
 
 - [Medusa Mobile template](https://github.com/bloomsynth/medusa-mobile-react-native)
+- [Medusa Mobile for Flutter](https://github.com/bloomsynth/medusa-mobile-flutter), if you build with Flutter instead
 - [Report an issue](https://github.com/bloomsynth/medusa-mobile-react-native/issues)
 - [Developing and releasing this CLI](https://github.com/bloomsynth/medusa-mobile-react-native/blob/main/packages/create-medusa-mobile/DEVELOPMENT.md)
