@@ -36,6 +36,10 @@ const ENV_KEYS = {
   stripePublishableKey: 'STRIPE_PUBLISHABLE_KEY',
 };
 
+function escapeRegExp(value) {
+  return value.replace(/[\\^$.*+?()[\]{}|]/g, '\\$&');
+}
+
 function escapeXml(value) {
   return value
     .replace(/&/g, '&amp;')
@@ -182,7 +186,7 @@ function setBundleId(root, bundleId) {
 
   // Kotlin package declarations and imports, then the source directories.
   const packagePattern = new RegExp(
-    `\\b${TEMPLATE.androidPackage.replace(/\./g, '\\.')}\\b`,
+    `\\b${escapeRegExp(TEMPLATE.androidPackage)}\\b`,
     'g',
   );
   for (const entry of walk(root, 'android')) {

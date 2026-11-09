@@ -124,9 +124,10 @@ function templateSource(template) {
     : template;
 }
 
-function isInsideGitRepository(dir) {
+function isInsideGitRepository(dir, env) {
   const result = spawnSync('git', ['rev-parse', '--is-inside-work-tree'], {
     cwd: dir,
+    env,
     stdio: 'ignore',
   });
   return result.status === 0;
@@ -217,6 +218,8 @@ async function collectInput(directory, values, io) {
  * call it directly.
  */
 async function main(argv, io = process) {
+  // Commands inherit io.env, so callers can configure Git and npm for them.
+  const childEnv = io.env ?? process.env;
   let target;
   let existed = false;
   let cloned = false;
@@ -256,7 +259,7 @@ async function main(argv, io = process) {
     }
     cloneArgs.push(templateSource(template), target);
     existed = fs.existsSync(target);
-    if (!run('git', cloneArgs)) {
+    if (!run('git', cloneArgs, { env: childEnv })) {
       throw new Error(
         `Could not clone the template from ${template}${ref ? ` at ${ref}` : ''}.`,
       );
@@ -270,15 +273,18 @@ async function main(argv, io = process) {
 
     if (!values['skip-install']) {
       io.stdout.write('Installing dependencies with npm ci\n');
-      if (!run('npm', ['ci'], { cwd: target })) {
+      if (!run('npm', ['ci'], { cwd: target, env: childEnv })) {
         io.stderr.write(
           'npm ci failed. Fix the error above, then run npm ci in the project.\n',
         );
       }
     }
 
-    if (!values['skip-git'] && !isInsideGitRepository(path.dirname(target))) {
-      const git = args => run('git', args, { cwd: target });
+    if (
+      !values['skip-git'] &&
+      !isInsideGitRepository(path.dirname(target), childEnv)
+    ) {
+      const git = args => run('git', args, { cwd: target, env: childEnv });
       const committed =
         git(['init', '--quiet']) &&
         git(['add', '--all']) &&

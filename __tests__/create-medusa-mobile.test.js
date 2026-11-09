@@ -329,23 +329,20 @@ describe('main', () => {
     const template = commitTemplate();
     const target = path.join(makeTemporaryDirectory(), 'acme-shop');
     const { io, output } = createIo();
-    const env = { ...process.env };
-    Object.assign(process.env, {
+    // CI runners have no Git identity; the CLI passes io.env to git commit.
+    const env = {
+      ...process.env,
       GIT_AUTHOR_NAME: 'Test',
       GIT_AUTHOR_EMAIL: 'test@example.com',
       GIT_COMMITTER_NAME: 'Test',
       GIT_COMMITTER_EMAIL: 'test@example.com',
-    });
-    try {
-      const code = await main(
-        [target, '--template', template, '--skip-install', '--yes'],
-        io,
-      );
-      expect(output.stderr).toBe('');
-      expect(code).toBe(0);
-    } finally {
-      process.env = env;
-    }
+    };
+    const code = await main(
+      [target, '--template', template, '--skip-install', '--yes'],
+      { ...io, env },
+    );
+    expect(output.stderr).toBe('');
+    expect(code).toBe(0);
     expect(JSON.parse(read(target, 'app.json')).name).toBe('AcmeShop');
     expect(
       read(target, 'android/app/src/main/java/com/acmeshop/MainActivity.kt'),
