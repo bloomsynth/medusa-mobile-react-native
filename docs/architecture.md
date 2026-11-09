@@ -82,6 +82,7 @@ is not evidence that an ecosystem upgrade is compatible.
 | Reanimated, Worklets, Gesture Handler, carousel                 | Check compatible versions together; validate Babel transforms, Jest mocks, and native behavior |
 | Medusa SDK and types                                            | Keep their versions aligned and check Store API behavior against the tested backend            |
 | Zod and Hook Form resolver                                      | Keep Zod 4 with a compatible resolver; test nested field errors and successful parsing         |
+| Stripe React Native                                             | Resolves the Stripe iOS SDK through SPM, which needs dynamic frameworks; the Podfile uses them |
 
 The TypeScript parser comes transitively from `@react-native/eslint-config`.
 Check its installed supported range rather than upgrading the compiler
