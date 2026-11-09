@@ -137,6 +137,13 @@ cd ..
 npm run ios
 ```
 
+The Podfile links pods as dynamic frameworks. `@stripe/stripe-react-native`
+resolves the Stripe iOS SDK through Swift Package Manager, which React Native
+supports only with dynamic frameworks, so with static linkage `pod install`
+fails with a `[stripe-react-native]` error. Leave `USE_FRAMEWORKS` unset or set
+it to `dynamic`. After a dependency change, commit the `ios/Podfile.lock` and
+`ios/RnStarterMedusa.xcodeproj` changes that `pod install` makes.
+
 ## Watchman troubleshooting
 
 Jest does not use Watchman in `test:ci`. If Metro fails because the host's Watchman
