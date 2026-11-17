@@ -15,6 +15,12 @@ updates:
     # Minor and patch updates arrive as one PR; major updates stay separate
     # so breaking changes can be reviewed on their own.
     groups:
+      # The community CLI and its platform packages must stay on one release,
+      # including across major versions. Listed first so it takes precedence.
+      react-native-community-cli:
+        patterns:
+          - "@react-native-community/cli"
+          - "@react-native-community/cli-*"
       npm-minor-patch:
         update-types:
           - "minor"

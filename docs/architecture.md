@@ -75,6 +75,7 @@ is not evidence that an ecosystem upgrade is compatible.
 | --------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
 | React and react-test-renderer                                   | Both pinned to 19.2.3 to match RN's embedded renderer                                          |
 | React Native and its Babel/Metro/ESLint/Jest/TypeScript configs | Keep the RN package family aligned at 0.87.1; use a compatible community CLI                   |
+| Community CLI and its Android/iOS platform packages             | Keep all three on one release (currently 21.0.0) so only one copy of the CLI is installed      |
 | ESLint                                                          | Stay on 9.x: RN's ESLint config declares support for 8.x or 9.x                                |
 | TypeScript                                                      | Current parser support is `>=4.8.4 <6.1.0`; keep TS below 6.1 while that applies               |
 | Babel                                                           | Keep 7.x across the Babel toolchain; the RN preset depends on Babel 7 transforms               |
@@ -89,7 +90,8 @@ Check its installed supported range rather than upgrading the compiler
 independently. Avoid `--force` or `--legacy-peer-deps` as a compatibility fix.
 
 Dependabot groups npm minor/patch updates weekly and opens major updates
-separately. It ignores `react`, `react-test-renderer`, `react-native`, and
+separately. `@react-native-community/cli` and its `cli-*` packages form their
+own group at every update type, so they arrive in one PR. It ignores `react`, `react-test-renderer`, `react-native`, and
 `@react-native/*`, which move together in a manual React Native upgrade, and
 ESLint 10 and later; update those ignore rules in `.github/dependabot.yml` when
 the matching constraint above changes. For an upgrade, inspect peer
